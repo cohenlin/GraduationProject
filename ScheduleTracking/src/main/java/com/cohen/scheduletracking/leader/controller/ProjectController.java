@@ -1,33 +1,25 @@
 package com.cohen.scheduletracking.leader.controller;
 
+import com.cohen.scheduletracking.common.DateEditor;
+import com.cohen.scheduletracking.common.StringUtils;
+import com.cohen.scheduletracking.entity.Project;
+import com.cohen.scheduletracking.leader.service.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.cohen.scheduletracking.common.DateEditor;
-import com.cohen.scheduletracking.common.StringUtils;
-import com.cohen.scheduletracking.entity.Project;
-import com.cohen.scheduletracking.leader.service.ProjectService;
 
 @Controller
 @RequestMapping("/project")
@@ -78,7 +70,7 @@ public class ProjectController {
         }
 
         String fileName = session.getAttribute("timeStamp") + "_" + file.getOriginalFilename();
-        if (fileName == "" || fileName.equals("") || fileName == null || fileName.equals(null)) {
+        if (fileName == "" || fileName.equals("")) {
             return "error";
         }
         File target = new File(path, fileName);

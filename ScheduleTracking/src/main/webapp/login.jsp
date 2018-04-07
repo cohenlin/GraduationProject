@@ -29,12 +29,12 @@
       <div id="login-page">
         <div class="container">
         
-              <form class="form-login" action="index" method="post">
+              <form class="form-login" action="user/login" method="post">
                 <h2 class="form-login-heading">登录</h2>
                 <div class="login-wrap">
-                    <input type="text" class="form-control" placeholder="用户名" autofocus>
+                    <input type="text" name="userName" class="form-control" placeholder="用户名" autofocus>
                     <br>
-                    <input type="password" class="form-control" placeholder="密码">
+                    <input type="password" name="password" class="form-control" placeholder="密码">
                     <label class="checkbox">
                         <span class="pull-right">
                             <a data-toggle="modal" href="login.html#myModal"> 忘记密码?</a>
