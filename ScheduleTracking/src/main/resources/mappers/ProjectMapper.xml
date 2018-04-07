@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cohen.scheduletracking.leader.dao.ProjectMapper">
+    <sql id="columns">
+        name,
+        introduction,
+        dept_id,
+        begin_time,
+        estimated_time,
+        end_time,
+        budget,
+        manager_id,
+        scheme_file,
+        schedule,
+        is_finish,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        is_delete
+    </sql>
+    <insert id="insert" parameterType="com.cohen.scheduletracking.entity.Project" keyProperty="id" useGeneratedKeys="true">
+        insert into project(<include refid="columns" />) values(
+            #{projectName}, #{projectDescribe}, #{deptId}, #{beginTime}, #{expectEndTime},
+            #{endTime},#{budget}, #{managerId},#{schemeFile}, #{schedule},
+            #{finished}, #{createUser}, #{createTime}, #{updateUser}, #{updateTime}, #{deleted}
+        );
+    </insert>
+</mapper>
