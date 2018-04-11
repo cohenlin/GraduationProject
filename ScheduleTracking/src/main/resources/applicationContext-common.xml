@@ -40,7 +40,8 @@
                 <value>classpath:mappers/DepartmentMapper.xml</value>
                 <value>classpath:mappers/EmployeeMapper.xml</value>
                 <value>classpath:mappers/CommonMapper.xml</value>
-                <value>classpath:mappers/loginMapper.xml</value>
+                <value>classpath:mappers/LoginMapper.xml</value>
+                <value>classpath:mappers/TaskMapper.xml</value>
             </list>
         </property>
     </bean>

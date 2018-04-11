@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cohen.scheduletracking.common.dao.TaskMapper">
+    <sql id="column">
+        `task_info`, `begin_time`, `estimated_time`, `end_time`,`emp_id`, `manager_id`, `project_id`, `schedule`, `is_finish`, `is_delete`
+    </sql>
+    <insert id="insert" parameterType="com.cohen.scheduletracking.entity.Task">
+        INSERT INTO `task`(<include refid="column"/>) VALUES (null, #{task.taskInfo}, #{task.beginTime}, #{task.estimatedTime}, #{task.endTime},
+       #{task.empId}, #{task.managerId}, #{task.projectId}, #{task.schedule}, #{task.finash}, #{task.delete})
+    </insert>
+    <select id="list" parameterType="int" resultType="com.cohen.scheduletracking.entity.Task">
+        select * from `task` as t where t.emp_id = #{id} and t.is_delete = '0' and t.is_finish = '0';
+    </select>
+</mapper>

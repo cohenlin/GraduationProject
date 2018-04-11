@@ -14,6 +14,7 @@
 <link href="assets/css/style-responsive.css" rel="stylesheet">
 <link href="css/bootstrap-datetimepicker.css" rel="stylesheet">
 
+<script src="js/jquery.min.js"></script>
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -37,7 +38,7 @@
 
             <div class="top-menu">
                 <ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="login.html">退出登录</a></li>
+                    <li><button id="btn-logout" class="logout">退出登录</button></li>
                 </ul>
             </div>
         </header>
@@ -121,6 +122,17 @@
               <!-- 边缘菜单 end-->
           </div>
       </aside>
+      <script>
+          $(function () {
+              $("#btn-logout").on("click", function () {
+                  $.post("logout", {"time" : new Date()}, function (data) {
+                      if(data.status == "1"){
+                          window.location.href = "http://localhost:8080/st/login.jsp";
+                      }
+                  });
+              })
+          })
+      </script>
       <!--sidebar end-->
 </body>
 </html>

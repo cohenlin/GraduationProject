@@ -1,11 +1,11 @@
 package com.cohen.scheduletracking.common.service;
 
+import com.cohen.scheduletracking.common.entity.MessageBody;
 import com.cohen.scheduletracking.entity.Employee;
 
+import javax.servlet.http.HttpSession;
+
 public interface LoginService {
-    Employee checkUserName(Employee emp);
 
-    Employee checkPassword(Employee emp);
-
-    Employee checkValid(Employee emp);
+    MessageBody login(Employee emp, MessageBody msg, HttpSession session);
 }
