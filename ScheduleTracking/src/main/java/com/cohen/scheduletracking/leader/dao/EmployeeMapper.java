@@ -1,10 +1,10 @@
 package com.cohen.scheduletracking.leader.dao;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.cohen.scheduletracking.entity.Employee;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 员工信息的mapper
@@ -12,6 +12,7 @@ import com.cohen.scheduletracking.entity.Employee;
  * @author 林金成
  *         2018年4月6日
  */
+@Component
 public interface EmployeeMapper {
 
     /**

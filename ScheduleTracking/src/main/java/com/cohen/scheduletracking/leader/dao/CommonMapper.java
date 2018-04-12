@@ -1,6 +1,7 @@
 package com.cohen.scheduletracking.leader.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 /**
  * 处理员工与项目、员工与任务之间关联关系的mapper
@@ -8,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
  * @author 林金成
  *         2018年4月6日
  */
+@Component
 public interface CommonMapper {
 
     /**

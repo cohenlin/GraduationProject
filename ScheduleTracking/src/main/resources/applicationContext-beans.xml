@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
     
     <!-- 扫描除了controller以外的包 -->
-    <context:component-scan base-package="com.*">
+    <context:component-scan base-package="com.cohen.scheduletracking.*">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 </beans>

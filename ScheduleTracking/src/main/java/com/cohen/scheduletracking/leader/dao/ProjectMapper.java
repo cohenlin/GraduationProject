@@ -1,7 +1,9 @@
 package com.cohen.scheduletracking.leader.dao;
 
 import com.cohen.scheduletracking.entity.Project;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface ProjectMapper {
     /**
      * 保存项目信息

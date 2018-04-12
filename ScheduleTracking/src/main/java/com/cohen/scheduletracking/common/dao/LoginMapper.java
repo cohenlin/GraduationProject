@@ -1,9 +1,8 @@
 package com.cohen.scheduletracking.common.dao;
 
+import com.cohen.scheduletracking.entity.Employee;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
-
-import com.cohen.scheduletracking.entity.Employee;
 
 @Component
 public interface LoginMapper {

@@ -55,7 +55,7 @@
                   <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
 
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="javascript:" >
                           <i class="fa fa-desktop"></i>
                           <span>项目管理</span>
                       </a>
@@ -67,18 +67,18 @@
                   </li>
 
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="javascript:" >
                           <i class="fa fa-cogs"></i>
                           <span>任务管理</span>
                       </a>
                       <ul class="sub">
                           <li><a  href="gallery.html">新增任务</a></li>
-                          <li><a  href="todo_list">任务列表</a></li>
+                          <li><a  href="task/list">任务列表</a></li>
                           <li><a  href="todo_list.html">修改任务</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="javascript:" >
                           <i class="fa fa-book"></i>
                           <span>待开发</span>
                       </a>
@@ -89,7 +89,7 @@
                       </ul> -->
                   </li>
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="javascript:" >
                           <i class="fa fa-tasks"></i>
                           <span>待开发</span>
                       </a>
@@ -98,7 +98,7 @@
                       </ul> -->
                   </li>
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="javascript:" >
                           <i class="fa fa-th"></i>
                           <span>待开发</span>
                       </a>
@@ -108,7 +108,7 @@
                       </ul> -->
                   </li>
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="javascript:" >
                           <i class=" fa fa-bar-chart-o"></i>
                           <span>待开发</span>
                       </a>

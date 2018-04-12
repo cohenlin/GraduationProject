@@ -1,14 +1,13 @@
 package com.cohen.scheduletracking.common.service.impl;
 
+import com.cohen.scheduletracking.common.dao.LoginMapper;
 import com.cohen.scheduletracking.common.entity.MessageBody;
+import com.cohen.scheduletracking.common.service.LoginService;
+import com.cohen.scheduletracking.entity.Employee;
 import com.cohen.scheduletracking.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.cohen.scheduletracking.common.dao.LoginMapper;
-import com.cohen.scheduletracking.common.service.LoginService;
-import com.cohen.scheduletracking.entity.Employee;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,7 +18,7 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private LoginMapper loginMapper;
 
-    public MessageBody login(Employee emp, MessageBody msg, HttpSession session) throws RuntimeException{
+    public MessageBody login(Employee emp, MessageBody msg, HttpSession session) throws RuntimeException {
         if (emp != null) {
             if (emp.getUserName() != null && emp.getUserName() != "") {
                 if (emp.getPassword() != null && emp.getPassword() != "") {
