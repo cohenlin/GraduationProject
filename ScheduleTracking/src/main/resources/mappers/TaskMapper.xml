@@ -12,6 +12,6 @@
        #{task.empId}, #{task.managerId}, #{task.projectId}, #{task.schedule}, #{task.finash}, #{task.delete})
     </insert>
     <select id="list" parameterType="int" resultType="com.cohen.scheduletracking.entity.Task">
-        select * from `task` as t where t.emp_id = #{id} and t.is_delete = '0' and t.is_finish = '0';
+        select * from `task` as t where t.emp_id = #{id} and t.is_delete = '0';
     </select>
 </mapper>

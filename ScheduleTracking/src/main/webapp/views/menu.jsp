@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;
+%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <html>
@@ -6,15 +10,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <!-- Bootstrap core CSS -->
-<link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="/assets/css/bootstrap.css" rel="stylesheet">
 <!--external css-->
-<link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
 <!-- Custom styles for this template -->
-<link href="assets/css/style.css" rel="stylesheet">
-<link href="assets/css/style-responsive.css" rel="stylesheet">
-<link href="css/bootstrap-datetimepicker.css" rel="stylesheet">
+<link href="/assets/css/style.css" rel="stylesheet">
+<link href="/assets/css/style-responsive.css" rel="stylesheet">
+<link href="/css/bootstrap-datetimepicker.css" rel="stylesheet">
 
-<script src="js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -52,7 +56,7 @@
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
               
-                  <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+                  <p class="centered"><a href="profile.html"><img src="/assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
 
                   <li class="sub-menu">
                       <a href="javascript:" >
@@ -73,7 +77,7 @@
                       </a>
                       <ul class="sub">
                           <li><a  href="gallery.html">新增任务</a></li>
-                          <li><a  href="task/list">任务列表</a></li>
+                          <li><a id="todo-list" href="javascript:void(0)">任务列表</a></li>
                           <li><a  href="todo_list.html">修改任务</a></li>
                       </ul>
                   </li>
@@ -125,11 +129,15 @@
       <script>
           $(function () {
               $("#btn-logout").on("click", function () {
-                  $.post("logout", {"time" : new Date()}, function (data) {
+                  $.post("/logout", {"time" : new Date()}, function (data) {
                       if(data.status == "1"){
-                          window.location.href = "http://localhost:8080/st/login.jsp";
+                          window.location.href = "http://localhost:8080/login.jsp";
                       }
                   });
+              })
+
+              $("#todo-list").on("click", function () {
+                  window.location.href = "http://localhost:8080/views/todo_list.jsp";
               })
           })
       </script>

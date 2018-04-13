@@ -1,14 +1,13 @@
 package com.cohen.scheduletracking.entity;
 
-import java.io.Serializable;
-import java.util.Date;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Past;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.validation.annotation.Validated;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 封装项目信息的实体类
@@ -40,12 +39,12 @@ public class Project implements Serializable {
     @NotBlank(message = "请提交策划案！")
     private String schemeFile;// 项目策划文件
     private double schedule;// 当前进度
-    private boolean finished;// 是否完成
+    private String finished;// 是否完成
     private int createUser;// 创建人
     private Date createTime;// 创建时间
     private int updateUser;// 修改人
     private Date updateTime;// 修改时间
-    private boolean deleted;// 逻辑删除
+    private String deleted;// 逻辑删除
 
     @Override
     public String toString() {
@@ -174,19 +173,19 @@ public class Project implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public boolean isFinished() {
+    public String isFinished() {
         return finished;
     }
 
-    public void setFinished(boolean finished) {
+    public void setFinished(String finished) {
         this.finished = finished;
     }
 
-    public boolean isDeleted() {
+    public String isDeleted() {
         return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(String deleted) {
         this.deleted = deleted;
     }
 }

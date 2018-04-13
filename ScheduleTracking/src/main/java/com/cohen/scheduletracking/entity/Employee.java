@@ -25,12 +25,12 @@ public class Employee implements Serializable {
     private String phoneNum;// 员工电话
     private String userName;// 员工登录用户名
     private String password;// 员工登录密码
-    private boolean valid;// 该员工是否可用
+    private String valid;// 该员工是否可用
     private int createUser;// 创建人
     private Date createTime;// 创建时间
     private int updateUser;// 修改人
     private Date updateTime;// 修改时间
-    private boolean deleted;// 逻辑删除
+    private String deleted;// 逻辑删除
 
     public int getId() {
         return id;
@@ -112,11 +112,11 @@ public class Employee implements Serializable {
         this.password = password;
     }
 
-    public boolean getValid() {
+    public String getValid() {
         return valid;
     }
 
-    public void setValid(boolean valid) {
+    public void setValid(String valid) {
         this.valid = valid;
     }
 
@@ -152,11 +152,11 @@ public class Employee implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public boolean isDeleted() {
+    public String isDeleted() {
         return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(String deleted) {
         this.deleted = deleted;
     }
 

@@ -109,9 +109,9 @@
 					    return;
 					} */
 
-					window.location.href = "http://localhost:8080/st/index";
+					window.location.href = "http://localhost:8080/index";
 					if (data.status == "1") {// 登陆成功！转发至首页面!
-						window.location.href = "http://localhost:8080/st/index";
+						window.location.href = "http://localhost:8080/index";
 					}
 				});
 			})

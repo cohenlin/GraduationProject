@@ -13,8 +13,8 @@ public class Task implements Serializable {
     private int managerId;// 领导
     private int projectId;// 所属项目
     private double schedule;// 进度
-    private boolean finish;// 是否完成
-    private boolean delete;// 是否删除
+    private String finish;// 是否完成
+    private String delete;// 是否删除
 
     public void setTaskInfo(String taskInfo) {
         this.taskInfo = taskInfo;
@@ -44,11 +44,11 @@ public class Task implements Serializable {
         this.schedule = schedule;
     }
 
-    public void setFinish(boolean finish) {
+    public void setFinish(String finish) {
         this.finish = finish;
     }
 
-    public void setDelete(boolean delete) {
+    public void setDelete(String delete) {
         this.delete = delete;
     }
 
@@ -84,11 +84,11 @@ public class Task implements Serializable {
         return schedule;
     }
 
-    public boolean isFinish() {
+    public String isFinish() {
         return finish;
     }
 
-    public boolean isDelete() {
+    public String isDelete() {
         return delete;
     }
 

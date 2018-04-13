@@ -3,7 +3,7 @@
          pageEncoding="UTF-8" %>
 <%@ include file="menu.jsp" %>
 <html>
-<link href="assets/css/to-do.css" rel="stylesheet">
+<link href="/assets/css/to-do.css" rel="stylesheet">
 <body>
 <!-- **********************************************************************************************************************************************************
   MAIN CONTENT
@@ -15,7 +15,7 @@
             <i class="fa fa-angle-right"></i> 任务列表
         </h3>
         <!-- COMPLEX TO DO LIST -->
-        <div class="row mt">
+        <div id="view" class="row mt">
             <div class="col-md-12">
                 <section class="task-panel tasks-widget">
                     <div class="panel-heading">
@@ -143,6 +143,9 @@
             <!-- /col-md-12-->
         </div>
         <!-- /row -->
+        <div id="add-form">
+            <p>add form</p>
+        </div>
     </section>
     <!--/wrapper -->
 </section>
@@ -151,29 +154,72 @@
 </section>
 
 <!-- js placed at the end of the document so the pages load faster -->
-<script src="assets/js/jquery.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
 <script class="include" type="text/javascript"
-        src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
-<script src="assets/js/jquery.scrollTo.min.js"></script>
-<script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
+        src="/assets/js/jquery.dcjqaccordion.2.7.js"></script>
+<script src="/assets/js/jquery.scrollTo.min.js"></script>
+<script src="/assets/js/jquery.nicescroll.js" type="text/javascript"></script>
 <!--common script for all pages-->
-<script src="assets/js/common-scripts.js"></script>
+<script src="/assets/js/common-scripts.js"></script>
 <!--script for this page-->
-<script src="assets/js/tasks.js" type="text/javascript"></script>
+<script src="/assets/js/tasks.js" type="text/javascript"></script>
 
 <script>
     jQuery(document).ready(function () {
         TaskList.initTaskWidget();
-
-        $.get("task/list", {"time": new Date()}, function (data) {
-            // if (data.length > 0) {
-            //     for (var i = 0; i < data.length(); i++) {
-            //
-            //     }
-            // }
+        
+        $.get("/task/list", {"time": new Date()}, function (data) {
+            if (data.length > 0) {
+                $(".task-list").empty();
+                for (var i = 0; i < data.length; i++) {
+                    var node = getNodeOfTask(data[i]);
+                    $(".task-list").append(node);
+                }
+            }
         });
     });
+    
+    function showForm() {
+        $("#view").hide();
+        $("#add-form").show();
+    }
+
+    function getNodeOfTask(data) {
+        var status;
+        if (data.finish == true) {
+            status = "<span class=\"badge bg-theme\">Done</span>";
+        } else {
+            status = "<span class=\"badge bg-success\">" + ((data.estimatedTime - data.beginTime) / (1000 * 60 * 60 * 24)).toFixed(2) + " Days</span>";
+        }
+        var node = "<li>" +
+            "<div class=\"task-checkbox\">" +
+            "<input type=\"checkbox\" class=\"list-child\" value=\"\" />" +
+            "</div>" +
+            "<div class=\"task-title\">" +
+            "<span class=\"task-title-sp\">" + data.taskInfo + "</span> " +
+            status +
+            "<div class=\"pull-right hidden-phone\">" +
+            "<button onclick=\"showForm()\" class=\"btn btn-success btn-xs\">" +
+            "<i class=\" fa fa-check\"></i>" +
+            "</button>" +
+            "<button class=\"btn btn-primary btn-xs\">" +
+            "<i class=\"fa fa-pencil\"></i>" +
+            "</button>" +
+            "<button class=\"btn btn-danger btn-xs\">" +
+            "<i class=\"fa fa-trash-o \"></i>" +
+            "</button>" +
+            "</div>" +
+            "</div>" +
+            "</li>";
+        return node;
+    }
+
+    function dateFormat(cellval) {
+        var date = new Date(cellval);
+        return date.toLocaleString();
+    }
+
 </script>
 </body>
 </html>

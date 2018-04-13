@@ -1,6 +1,6 @@
 package com.cohen.scheduletracking.common.service.impl;
 
-import com.cohen.scheduletracking.common.dao.LoginMapper;
+import com.cohen.scheduletracking.common.dao.LoginInMapper;
 import com.cohen.scheduletracking.common.entity.MessageBody;
 import com.cohen.scheduletracking.common.service.LoginService;
 import com.cohen.scheduletracking.entity.Employee;
@@ -16,26 +16,26 @@ import javax.servlet.http.HttpSession;
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
-    private LoginMapper loginMapper;
+    private LoginInMapper loginInMapper;
 
     public MessageBody login(Employee emp, MessageBody msg, HttpSession session) throws RuntimeException {
         if (emp != null) {
             if (emp.getUserName() != null && emp.getUserName() != "") {
                 if (emp.getPassword() != null && emp.getPassword() != "") {
-                    Employee empResult = loginMapper.checkUserName(emp.getUserName());
+                    Employee empResult = loginInMapper.checkUserName(emp.getUserName());
                     if (empResult != null && empResult.getId() > 0) {
                         String password = emp.getPassword();
                         emp.setPassword(MD5Util.MD5(emp.getPassword()));
-                        empResult = loginMapper.checkPassword(emp.getUserName(), emp.getPassword());
+                        empResult = loginInMapper.checkPassword(emp.getUserName(), emp.getPassword());
                         emp.setPassword(password);
                         if (empResult != null && empResult.getId() > 0) {
                             emp.setPassword(MD5Util.MD5(emp.getPassword()));
-                            empResult = loginMapper.checkValid(emp.getUserName(), emp.getPassword(), emp.getValid());
+                            empResult = loginInMapper.checkValid(emp.getUserName(), emp.getPassword(), "1");
                             if (empResult != null && empResult.getId() > 0) {
                                 msg.setStatus("1");
                                 msg.setBody("登陆成功！");
-                                emp.setPassword(null);
-                                session.setAttribute("user", emp);
+                                empResult.setPassword(null);
+                                session.setAttribute("user", empResult);
                                 return msg;
                             } else {
                                 msg.setStatus("-3");

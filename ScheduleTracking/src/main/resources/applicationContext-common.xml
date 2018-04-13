@@ -13,10 +13,10 @@
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!-- 数据源 -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/schedule_tracking?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;useSSL=true" />
-        <property name="driverClass" value="com.mysql.jdbc.Driver" />
-        <property name="user" value="root" />
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="jdbc:mysql://localhost:3306/schedule_tracking?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;useSSL=true" />
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="username" value="root" />
         <property name="password" value="940925" />
     </bean>
     
@@ -40,12 +40,14 @@
                 <value>classpath:mappers/DepartmentMapper.xml</value>
                 <value>classpath:mappers/EmployeeMapper.xml</value>
                 <value>classpath:mappers/CommonMapper.xml</value>
-                <value>classpath:mappers/LoginMapper.xml</value>
+                <value>classpath:mappers/LoginInMapper.xml</value>
                 <value>classpath:mappers/TaskMapper.xml</value>
             </list>
         </property>
     </bean>
 
     <!-- 扫描所有的dao包下的接口，使spring能够完成@Autowired自动注入 -->
-    <mybatis-spring:scan base-package="com.cohen.scheduletracking.*.dao" />
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.cohen.scheduletracking.*.dao" />
+    </bean>
 </beans>

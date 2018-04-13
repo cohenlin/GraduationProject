@@ -20,5 +20,5 @@ public interface CommonMapper {
      * @param proId
      *            : 项目ID
      */
-    int insertEmpProject(@Param("empId") int empId, @Param("proId") int proId, @Param("isManager") boolean isManager);
+    int insertEmpProject(@Param("empId") int empId, @Param("proId") int proId, @Param("isManager") String isManager);
 }
