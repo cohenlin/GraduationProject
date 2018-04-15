@@ -15,14 +15,13 @@
             <i class="fa fa-angle-right"></i> 任务列表
         </h3>
         <div class="pull-right add-task-row" style="margin-right: 4px; margin-bottom: 5px;">
-            <div style="margin-right:125px;">
-                <a onclick="showForm()" class="btn btn-success btn-sm pull-left" href="javascript:void(0)">Add New
-                    Tasks</a>
-            </div>
             <div>
-                <a class="btn btn-default btn-sm pull-right"
-                   href="javascript:void(0)">See All Tasks</a>
+                <a onclick="showForm()" class="btn btn-success btn-sm pull-left" href="javascript:void(0)">新建任务</a>
             </div>
+            <!--<div>-->
+                <!--<a class="btn btn-default btn-sm pull-right"-->
+                   <!--href="javascript:void(0)">See All Tasks</a>-->
+            <!--</div>-->
         </div>
         <!-- COMPLEX TO DO LIST -->
         <div id="view" class="row mt">
@@ -31,77 +30,45 @@
                     <div class="panel-heading">
                         <div class="pull-left">
                             <h5>
-                                <i class="fa fa-tasks"></i> Todo List - Complex Style
+                                <i class="fa fa-tasks"></i> 未完成任务列表
                             </h5>
                         </div>
-                        <!--<div class="pull-right add-task-row">
-                            <div style="margin-right:125px;">
-                                <a onclick="showForm()" class="btn btn-success btn-sm pull-left"
-                                   href="javascript:void(0)">Add New Tasks</a>
-                            </div>
-                            <div>
-                                <a class="btn btn-default btn-sm pull-right"
-                                   href="javascript:void(0)">See All Tasks</a>
-                            </div>
-                        </div>-->
                         <br>
                     </div>
                     <div class="panel-body">
-                        <div id="unfinished-task-list" class="task-content">
-                            <ul class="unfinished-task-list task-list">
+                        <div class="task-content">
+                            <ul id="unfinished-task-list" class="task-list">
 
                             </ul>
                         </div>
-                        <!--<div class=" add-task-row">
-                            <a onclick="showForm()" class="btn btn-success btn-sm pull-left"
-                               href="javascript:void(0)">Add New Tasks</a> <a
-                                class="btn btn-default btn-sm pull-right"
-                                href="javascript:void(0)">See All Tasks</a>
-                        </div>-->
                     </div>
                 </section>
-
-
                 <section class="task-panel tasks-widget" style="margin-top: 30px;">
                     <div class="panel-heading">
                         <div class="pull-left">
                             <h5>
-                                <i class="fa fa-tasks"></i> Todo List - Complex Style
+                                <i class="fa fa-tasks"></i> 已完成任务列表
                             </h5>
                         </div>
                         <br>
                     </div>
                     <div class="panel-body">
-                        <div id="finished-task-list" class="task-content" hidden>
-                            <ul class="finished-task-list task-list">
+                        <div class="task-content">
+                            <ul id="finished-task-list" class="task-list">
 
                             </ul>
                         </div>
                     </div>
                 </section>
-
-
             </div>
             <!-- /col-md-12-->
         </div>
-
         <!-- -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
         <div id="add-form" class="row" hidden>
             <div class="col-md-12">
                 <section class="task-panel tasks-widget">
 
                     <div class="panel-body">
-
-                        <div class="form-group col-sm-12">
-                            <label class="col-sm-3 control-label" style="text-align:right">备用字段</label>
-                            <div class="col-sm-6 input-append date">
-                                <input id="ss" type="text" value=""
-                                       class="form-control form_datetime"
-                                       onchange=""/>
-                            </div>
-                            <div id="sss" class="control-label"></div>
-                        </div>
-
                         <div class="form-group col-sm-12">
                             <label class="col-sm-3 control-label" style="text-align:right">开始时间</label>
                             <div class="col-sm-6 input-append date">
@@ -130,11 +97,14 @@
                         </div>
                         <div class="form-group col-sm-12">
                             <div class="col-sm-3 col-sm-offset-4">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <button id="btn-submit" type="submit" class="btn btn-success">提交</button>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <button id="btn-reset" type="button" class="btn btn-warning">重置</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button id="btn-cancel" type="button" class="btn">取消</button>
                                 </div>
                             </div>
                         </div>
@@ -157,9 +127,12 @@
 <script>
     jQuery(document).ready(function () {
         TaskList.initTaskWidget();
-
+        // 查询当前用户的所有任务，按完成与否显示在对应区域
         initTask();
+        // 设置定时器定时更新任务列表时间
+        setInterval();
 
+        // 给新增任务的提交按钮绑定点击事件，点击后将表单数据获取并发到后台保存为新任务
         $("#btn-submit").on("click", function () {
             var beginTime = $("#beginTime").val();
             var estimatedTime = $("#estimatedTime").val();
@@ -170,104 +143,151 @@
                 "taskInfo": taskInfo,
                 "time": new Date()
             };
-            console.log(args);
             $.post("/task/insert", args, function (data) {
                 if (data.status == 1) {
                     initTask();
                     $("#view").show();
                     $("#add-form").hide();
+                    // 设置定时器定时更新任务列表时间
+                    setInterval();
                 }
             });
         });
 
+        // 给重置按钮绑定点击事件，点击后清空表单数据
         $("#btn-reset").on("click", function () {
             clearForm();
         });
+
+        // 取消新增任务
+        $("#btn-cancel").on("click", function(){
+            $("#view").show();
+            clearForm();
+            $("#add-form").hide();
+            // 设置定时器定时更新任务列表时间
+            setInterval();
+        });
     });
 
+    function setInterval() {
+        // 一分钟更新一次任务列表时间
+        window.setInterval(function(){
+            initTask();
+        }, 60000);
+    }
+
+    // 查询当前用户的所有任务，按完成与否显示在对应区域
     function initTask() {
-        initUnFinishedTask();
-        initFinishedTask();
-        $(".unfinished-task-list").show();
-        $(".finished-task-list").hide();
-    }
-
-    function initUnFinishedTask() {
+        $("#view").show();// 显示任务列表
+        $("#add-form").hide();// 隐藏新增表单
         $.ajax({
             async: false,
-            url: '/task/listAllUnFinished',
+            url: '/task/list',
             type: 'get',
             data: {
                 "time": new Date()
             },
             success: function (data) {
                 if (data.length > 0) {
-                    $(".task-list").empty();
+                    $("#finished-task-list").empty();
+                    $("#unfinished-task-list").empty();
                     for (var i = 0; i < data.length; i++) {
                         var node = getNodeOfTask(data[i]);
-                        $(".unfinished-task-list").append(node);
+                        if(data[i].finish == '0'){
+                            $("#unfinished-task-list").append(node);
+                        } else {
+                            $("#finished-task-list").append(node);
+                        }
                     }
                 }
             },
             error: function (data) {
-                initUnFinishedTask();
+                alert("加载任务信息失败！请刷新重试！");
             }
         });
     }
 
-    function initFinishedTask() {
-        $.ajax({
-            async: false,
-            url: '/task/listAllFinished',
-            type: 'get',
-            data: {
-                "time": new Date()
-            },
-            success: function (data) {
-                if (data.length > 0) {
-                    $(".task-list").empty();
-                    for (var i = 0; i < data.length; i++) {
-                        var node = getNodeOfTask(data[i]);
-                        $(".finished-task-list").append(node);
-                    }
-                }
-            },
-            error: function (data) {
-                initFinishedTask();
-            }
-        });
-    }
-
+    // 将任务设置为已完成
     function finishTask(id) {
-        alert("id : " + id);
-        $.ajax({
-            type: 'post',
-            url: '/task/finish',
-            data: {
-                "id": id,
-                _method: "PUT"
-            },
-            success: function (data) {
-                alert("put success");
-            },
-            error: function (data) {
-                alert("put error");
-            }
-        });
+        if(confirm("确认设置任务为完成？")){
+            $.ajax({
+                type: 'post',
+                url: '/task/finish',
+                data: {
+                    "id": id,
+                    _method: "PUT"
+                },
+                success: function (data) {
+                    initTask();// 修改成功，重新加载任务列表
+                },
+                error: function (data) {
+                    alert("提交失败！请重试！");
+                }
+            });
+        }
     }
 
+    // 编辑任务
+    function editTask(id) {
+        if(confirm("确定编辑任务？")){
+            $.ajax({
+                url: "/task/edit",
+                type: "POST",
+                data:{
+                    _method: "PUT",
+                    "id": id
+                },
+                success: function(data){
+
+                },
+                error: function(data){
+
+                }
+            });
+        }
+    }
+
+    // 删除任务
+    function removeTask(id) {
+        if(confirm("确认删除此任务？")){
+            $.ajax({
+                url: "/task/delete",
+                type: "POST",
+                data:{
+                    _method: "DELETE",
+                    "id": id,
+                    "time": new Date()
+                },
+                success: function(data) {
+                    if(data.status == "1"){
+                        initTask();// 删除成功后重新加载任务列表！
+                    }else{
+                        alert("删除失败！请重试！");
+                    }
+                },
+                error: function(data){
+                    alert("删除失败！请重试！");
+                }
+            });
+        }
+    }
+
+    // 点击新增任务按钮，隐藏任务列表，显示新增表单
     function showForm() {
+        window.clearInterval();
         $("#view").hide();
         clearForm();
         $("#add-form").show();
     }
 
+    // 清空当前新增表单的数据
     function clearForm() {
         $("#beginTime").val("");
         $("#estimatedTime").val("");
         $("#taskInfo").val("");
     }
 
+    // 根据查询到的任务信息，拼成列表的子节点返回
     function getNodeOfTask(data) {
         var status;
         if (data.finish == true) {
@@ -311,12 +331,6 @@
             "</li>";
         return node;
     }
-
-    function dateFormat(cellval) {
-        var date = new Date(cellval);
-        return date.toLocaleString();
-    }
-
 </script>
 <jsp:include page="footer.jsp"/>
 </body>

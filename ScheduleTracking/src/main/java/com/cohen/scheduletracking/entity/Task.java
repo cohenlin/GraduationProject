@@ -13,8 +13,12 @@ public class Task implements Serializable {
     private int managerId;// 领导
     private int projectId;// 所属项目
     private double schedule;// 进度
-    private String finish;// 是否完成
     private String delete;// 是否删除
+    private int createUser;// 创建人
+    private Date createTime;// 创建时间
+    private int updateUser;// 修改人
+    private Date updateTime;// 修改时间
+    private String status;// 状态：0为未完成状态;1为完成状态;2为正在审核状态
 
     public void setTaskInfo(String taskInfo) {
         this.taskInfo = taskInfo;
@@ -42,10 +46,6 @@ public class Task implements Serializable {
 
     public void setSchedule(double schedule) {
         this.schedule = schedule;
-    }
-
-    public void setFinish(String finish) {
-        this.finish = finish;
     }
 
     public void setDelete(String delete) {
@@ -84,11 +84,7 @@ public class Task implements Serializable {
         return schedule;
     }
 
-    public String isFinish() {
-        return finish;
-    }
-
-    public String isDelete() {
+    public String getDelete() {
         return delete;
     }
 
@@ -102,5 +98,45 @@ public class Task implements Serializable {
 
     public void setEmpId(int empId) {
         this.empId = empId;
+    }
+
+    public int getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(int createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(int updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

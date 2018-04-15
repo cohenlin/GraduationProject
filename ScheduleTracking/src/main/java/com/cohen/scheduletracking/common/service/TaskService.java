@@ -10,13 +10,36 @@ public interface TaskService {
 
     /**
      * 新增任务
-     * @param task
-     * @param msg
+     *
      * @return
      */
     MessageBody insert(Task task, MessageBody msg, HttpSession session);
 
-    List<Task> list(HttpSession session, String finish);
+    /**
+     * 检索当前用户所有任务
+     *
+     * @return
+     */
+    List<Task> list(HttpSession session);
 
-    MessageBody changeTaskToFinish(int id, MessageBody msg);
+    /**
+     * 设置任务为已完成
+     *
+     * @return
+     */
+    MessageBody changeTaskToFinish(int id, MessageBody msg, HttpSession session);
+
+    /**
+     * 删除当前任务
+     *
+     * @return
+     */
+    MessageBody delete(int id, MessageBody msg, HttpSession session);
+
+    /**
+     * 编辑任务
+     *
+     * @return
+     */
+    MessageBody edit(int id, MessageBody msg, HttpSession session);
 }
