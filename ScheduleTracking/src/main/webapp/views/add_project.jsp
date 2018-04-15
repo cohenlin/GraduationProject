@@ -6,7 +6,7 @@
 <body>
 <script type="text/javascript">
     $(function(){
-    	$.get("dept/getAll", {"time" : new Date()}, function(data) {
+    	$.get("/dept/getAll", {"time" : new Date()}, function(data) {
             for(var i = 0; i < data.length; i++) {
                 var optionNode = "<option value='" + data[i].id + "'>" + data[i].deptName + "</option>";
                 $("#deptId").append(optionNode);
@@ -113,6 +113,7 @@
 							</div>
 						</div>
 					</div>
+				</div>
 					<!-- col-lg-12-->
 				</div>
 			</section>

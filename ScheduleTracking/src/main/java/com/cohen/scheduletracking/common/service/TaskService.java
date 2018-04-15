@@ -16,5 +16,7 @@ public interface TaskService {
      */
     MessageBody insert(Task task, MessageBody msg, HttpSession session);
 
-    List<Task> list(HttpSession session);
+    List<Task> list(HttpSession session, String finish);
+
+    MessageBody changeTaskToFinish(int id, MessageBody msg);
 }

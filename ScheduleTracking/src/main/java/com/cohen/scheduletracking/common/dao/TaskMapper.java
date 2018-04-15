@@ -10,5 +10,7 @@ import java.util.List;
 public interface TaskMapper {
     int insert(@Param("task") Task task);
 
-    List<Task> list(@Param("id") int id);
+    List<Task> list(@Param("id") int id,@Param("finish") String finish);
+
+    int changeTaskToFinish(@Param("id") int id, @Param("finish") String finish);
 }

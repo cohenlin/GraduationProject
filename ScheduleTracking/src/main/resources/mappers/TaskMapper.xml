@@ -5,13 +5,17 @@
 
 <mapper namespace="com.cohen.scheduletracking.common.dao.TaskMapper">
     <sql id="column">
-        `task_info`, `begin_time`, `estimated_time`, `end_time`,`emp_id`, `manager_id`, `project_id`, `schedule`, `is_finish`, `is_delete`
+          `id`, `task_info`, `begin_time`, `estimated_time`, `end_time`,`emp_id`, `manager_id`, `project_id`, `schedule`, `is_finish`, `is_delete`
     </sql>
     <insert id="insert" parameterType="com.cohen.scheduletracking.entity.Task">
-        INSERT INTO `task`(<include refid="column"/>) VALUES (null, #{task.taskInfo}, #{task.beginTime}, #{task.estimatedTime}, #{task.endTime},
-       #{task.empId}, #{task.managerId}, #{task.projectId}, #{task.schedule}, #{task.finash}, #{task.delete})
+        INSERT INTO `task`(<include refid="column"/>) VALUES (#{task.id}, #{task.taskInfo}, #{task.beginTime}, #{task.estimatedTime}, #{task.endTime},
+       #{task.empId}, #{task.managerId}, #{task.projectId}, #{task.schedule}, #{task.finish}, #{task.delete})
     </insert>
-    <select id="list" parameterType="int" resultType="com.cohen.scheduletracking.entity.Task">
-        select * from `task` as t where t.emp_id = #{id} and t.is_delete = '0';
+    <select id="list" resultType="com.cohen.scheduletracking.entity.Task">
+        select * from `task` as t where t.emp_id = #{id} and t.is_delete = '0' and t.is_finish = #{finish};
     </select>
+
+    <update id="changeTaskToFinish">
+        update `task` as t set t.is_finish = #{finish} where t.id = #{id}
+    </update>
 </mapper>

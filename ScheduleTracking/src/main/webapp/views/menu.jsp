@@ -64,7 +64,7 @@
                           <span>项目管理</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="add_project_form">新增项目</a></li>
+                          <li><a  href="/views/add_project.jsp">新增项目</a></li>
                           <li><a  href="buttons.html">浏览项目</a></li>
                           <li><a  href="panels.html">修改项目</a></li>
                       </ul>
@@ -77,7 +77,7 @@
                       </a>
                       <ul class="sub">
                           <li><a  href="gallery.html">新增任务</a></li>
-                          <li><a id="todo-list" href="javascript:void(0)">任务列表</a></li>
+                          <li><a id="todo-list" href="/views/todo_list.jsp">任务列表</a></li>
                           <li><a  href="todo_list.html">修改任务</a></li>
                       </ul>
                   </li>
@@ -136,9 +136,9 @@
                   });
               })
 
-              $("#todo-list").on("click", function () {
-                  window.location.href = "http://localhost:8080/views/todo_list.jsp";
-              })
+              // $("#todo-list").on("click", function () {
+              //     window.location.href = "http://localhost:8080/views/todo_list.jsp";
+              // })
           })
       </script>
       <!--sidebar end-->

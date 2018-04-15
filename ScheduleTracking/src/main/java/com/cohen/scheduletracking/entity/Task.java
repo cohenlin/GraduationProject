@@ -5,9 +5,9 @@ import java.util.Date;
 
 public class Task implements Serializable {
     private int id;// 主键
-    private String taskInfo;// 任务信息
-    private Date beginTime;// 开始时间
-    private Date estimatedTime;// 预计完成时间
+    private String taskInfo;// 任务信息.
+    private Date beginTime;// 开始时间.
+    private Date estimatedTime;// 预计完成时间.
     private Date endTime;// 完成时间
     private int empId;// 员工id
     private int managerId;// 领导
