@@ -1,33 +1,27 @@
 package com.cohen.scheduletracking.leader.controller;
 
+import com.cohen.scheduletracking.common.entity.MessageBody;
+import com.cohen.scheduletracking.entity.Project;
+import com.cohen.scheduletracking.leader.service.ProjectService;
+import com.cohen.scheduletracking.utils.DateEditor;
+import com.cohen.scheduletracking.utils.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.cohen.scheduletracking.entity.Project;
-import com.cohen.scheduletracking.leader.service.ProjectService;
-import com.cohen.scheduletracking.utils.DateEditor;
-import com.cohen.scheduletracking.utils.StringUtils;
 
 @Controller
 @RequestMapping("/project")
@@ -70,7 +64,7 @@ public class ProjectController {
      */
     @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
     public String fileUpload(HttpServletRequest request,
-            @RequestParam(value = "file", required = false) MultipartFile file, HttpSession session) {
+                             @RequestParam(value = "file", required = false) MultipartFile file, HttpSession session) {
         String msg = null;
         String path = request.getSession().getServletContext().getRealPath("WEB-INF/upload");
         if (file == null) {
@@ -100,5 +94,24 @@ public class ProjectController {
         }
 
         return msg;
+    }
+
+    /**
+     * 检索当前用户的项目信息
+     *
+     * @param msg
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    public MessageBody list(MessageBody msg, HttpSession session) {
+        return projectService.list(msg, session);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getEmpByProId", method = RequestMethod.GET)
+    public MessageBody getEmpByProId(@RequestParam("pid") int pid, MessageBody msg) {
+        return projectService.getEmpByProId(pid, msg);
     }
 }

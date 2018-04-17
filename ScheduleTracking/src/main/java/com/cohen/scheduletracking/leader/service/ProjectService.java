@@ -1,9 +1,9 @@
 package com.cohen.scheduletracking.leader.service;
 
-import java.util.Date;
-import java.util.List;
-
+import com.cohen.scheduletracking.common.entity.MessageBody;
 import com.cohen.scheduletracking.entity.Project;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * 项目管理的业务类
@@ -20,30 +20,13 @@ public interface ProjectService {
      */
     Integer save(Project project);
 
-    /**
-     * 修改项目信息
-     * 
-     * @return 影响行数
-     */
-    Integer update(Integer id, Project project);
+    MessageBody list(MessageBody msg, HttpSession session);
 
     /**
-     * 根据项目ID检索
+     * 查询项目参与员工
+     * @param pid
+     * @param msg
+     * @return
      */
-    Project getProjectById(Integer id);
-
-    /**
-     * 根据日期检索
-     */
-    List<Project> getProjectByDate(Date begin, Date end);
-
-    /**
-     * 根据完成情况查询项目
-     */
-    List<Project> getProjectByIsFinished(Boolean isFinished);
-
-    /**
-     * 查询所有项目信息
-     */
-    List<Project> getAll();
+    MessageBody getEmpByProId(int pid, MessageBody msg);
 }

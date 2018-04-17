@@ -65,7 +65,7 @@
                       </a>
                       <ul class="sub">
                           <li><a  href="/views/add_project.jsp">新增项目</a></li>
-                          <li><a  href="buttons.html">浏览项目</a></li>
+                          <li><a  href="/views/index.jsp">浏览项目</a></li>
                           <li><a  href="panels.html">修改项目</a></li>
                       </ul>
                   </li>

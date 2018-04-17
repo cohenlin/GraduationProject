@@ -24,4 +24,11 @@ public interface EmployeeMapper {
      * 根据id查员工
      */
     Employee getEmployeeById(int id);
+
+    /**
+     * 根据id批量查员工
+     * @param ids
+     * @return
+     */
+    List<Employee> queryById(@Param("ids") List<Integer> ids);
 }

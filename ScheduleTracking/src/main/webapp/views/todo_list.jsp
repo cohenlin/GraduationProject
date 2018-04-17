@@ -130,7 +130,10 @@
         // 查询当前用户的所有任务，按完成与否显示在对应区域
         initTask();
         // 设置定时器定时更新任务列表时间
-        setInterval();
+        // 一分钟更新一次任务列表时间
+        // window.setInterval(function(){
+        //     initTask();
+        // }, 60000);
 
         // 给新增任务的提交按钮绑定点击事件，点击后将表单数据获取并发到后台保存为新任务
         $("#btn-submit").on("click", function () {
@@ -149,7 +152,10 @@
                     $("#view").show();
                     $("#add-form").hide();
                     // 设置定时器定时更新任务列表时间
-                    setInterval();
+                    // 一分钟更新一次任务列表时间
+                    // window.setInterval(function(){
+                    //     initTask();
+                    // }, 60000);
                 }
             });
         });
@@ -165,7 +171,10 @@
             clearForm();
             $("#add-form").hide();
             // 设置定时器定时更新任务列表时间
-            setInterval();
+            // 一分钟更新一次任务列表时间
+            // window.setInterval(function(){
+            //     initTask();
+            // }, 60000);
         });
     });
 
@@ -274,7 +283,7 @@
 
     // 点击新增任务按钮，隐藏任务列表，显示新增表单
     function showForm() {
-        window.clearInterval();
+        // window.clearInterval();
         $("#view").hide();
         clearForm();
         $("#add-form").show();
@@ -294,8 +303,9 @@
             status = "<span class=\"badge bg-theme\">已完成</span>"; // bg-info, bg-important, bg-warning, bg-success
         } else {
             var now = new Date();
-            var days = ((data.estimatedTime - now.getTime()) / (1000 * 60 * 60 * 24)).toFixed();// 天数
-            var hours = ((((data.estimatedTime - now.getTime()) / (1000 * 60 * 60 * 24)) - days) * 24).toFixed();// 小时数
+            var h = ((data.estimatedTime - now.getTime()) / (1000 * 60 * 60)).toFixed(0);
+            var days = Math.floor(h / 24);
+            var hours = h - days * 24;// 小时数
             var color;
             if (days < 3) {
                 color = "bg-info";
@@ -330,6 +340,14 @@
             "</div>" +
             "</li>";
         return node;
+    }
+
+    // 传入毫秒值，计算出几天几小时
+    function getTimes(sec){
+        var hours = (sec / (1000 * 60 * 60)).toFixed(0);
+        var d = Math.floor(hours / 24);
+        var h = hours - d * 24;
+        return d.toString() + "天 " + h.toString() + "小时";
     }
 </script>
 <jsp:include page="footer.jsp"/>

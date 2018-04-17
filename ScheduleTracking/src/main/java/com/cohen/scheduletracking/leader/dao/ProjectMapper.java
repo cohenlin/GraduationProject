@@ -1,7 +1,10 @@
 package com.cohen.scheduletracking.leader.dao;
 
 import com.cohen.scheduletracking.entity.Project;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public interface ProjectMapper {
@@ -13,4 +16,8 @@ public interface ProjectMapper {
      * @return
      */
     int insert(Project project);
+
+    List<Project> list(@Param("id") int id);
+
+    List<Project> listByProjectId(@Param("proIds") List<Integer> proIds);
 }

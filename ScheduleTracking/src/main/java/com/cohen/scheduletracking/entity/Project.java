@@ -38,7 +38,7 @@ public class Project implements Serializable {
     private String projectDescribe;// 项目简介
     @NotBlank(message = "请提交策划案！")
     private String schemeFile;// 项目策划文件
-    private double schedule;// 当前进度
+    private String schedule;// 当前进度
     private String finished;// 是否完成
     private int createUser;// 创建人
     private Date createTime;// 创建时间
@@ -133,11 +133,11 @@ public class Project implements Serializable {
         this.schemeFile = schemeFile;
     }
 
-    public double getSchedule() {
+    public String getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(double schedule) {
+    public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
 
@@ -173,7 +173,7 @@ public class Project implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String isFinished() {
+    public String getFinished() {
         return finished;
     }
 
@@ -181,7 +181,7 @@ public class Project implements Serializable {
         this.finished = finished;
     }
 
-    public String isDeleted() {
+    public String getDeleted() {
         return deleted;
     }
 

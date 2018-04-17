@@ -1,8 +1,8 @@
 package com.cohen.scheduletracking.leader.service;
 
-import java.util.List;
-
 import com.cohen.scheduletracking.entity.Employee;
+
+import java.util.List;
 
 /**
  * 员工信息相关业务
@@ -23,4 +23,10 @@ public interface EmployeeService {
      * @return
      */
     Employee getEmployeeById(int id);
+
+    /**
+     * 根据id批量查员工
+     * @return
+     */
+    List<Employee> queryById(List<Integer> ids);
 }

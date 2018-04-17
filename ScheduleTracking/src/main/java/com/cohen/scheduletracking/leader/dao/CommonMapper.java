@@ -1,7 +1,10 @@
 package com.cohen.scheduletracking.leader.dao;
 
+import com.cohen.scheduletracking.entity.EmpProject;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 处理员工与项目、员工与任务之间关联关系的mapper
@@ -21,4 +24,8 @@ public interface CommonMapper {
      *            : 项目ID
      */
     int insertEmpProject(@Param("empId") int empId, @Param("proId") int proId, @Param("isManager") String isManager);
+
+    List<EmpProject> queryByEmpId(@Param("id") int id);
+
+    List<EmpProject> queryByProId(@Param("pid") int id);
 }

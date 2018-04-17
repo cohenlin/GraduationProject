@@ -14,4 +14,8 @@
     <select id="getEmployeeById" parameterType="int" resultType="com.cohen.scheduletracking.entity.Employee">
         select * from employee as e where e.id = #{id}
     </select>
+    <!-- 根据id批量查员工 -->
+    <select id="queryById" parameterType="list" resultType="com.cohen.scheduletracking.entity.Employee">
+        select * from employee as e where e.id in (<foreach collection="ids" item="id" separator=",">#{id}</foreach>) and e.is_valid='1'
+    </select>
 </mapper>
