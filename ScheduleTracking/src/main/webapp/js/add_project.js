@@ -11,7 +11,7 @@ $(function() {
         if(deptId == ""){
             return;
         }
-        $.get("emp/getByDeptId", {"deptId" : deptId,"time": new Date()}, function(data){
+        $.get("/emp/getByDeptId", {"deptId" : deptId,"time": new Date()}, function(data){
             for(var i = 0; i < data.length; i++) {
                 var optionNode = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                 $("#managerId").append(optionNode);

@@ -30,7 +30,7 @@
                     <div class="panel-heading">
                         <div class="pull-left">
                             <h5>
-                                <i class="fa fa-tasks"></i> 未完成任务列表
+                                <i class="fa fa-tasks"></i> 未完成任务
                             </h5>
                         </div>
                         <br>
@@ -43,11 +43,28 @@
                         </div>
                     </div>
                 </section>
+                <section class="task-panel tasks-widget">
+                    <div class="panel-heading">
+                        <div class="pull-left">
+                            <h5>
+                                <i class="fa fa-tasks"></i> 正在审核任务
+                            </h5>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="panel-body">
+                        <div class="task-content">
+                            <ul id="shenhe-task-list" class="task-list">
+
+                            </ul>
+                        </div>
+                    </div>
+                </section>
                 <section class="task-panel tasks-widget" style="margin-top: 30px;">
                     <div class="panel-heading">
                         <div class="pull-left">
                             <h5>
-                                <i class="fa fa-tasks"></i> 已完成任务列表
+                                <i class="fa fa-tasks"></i> 已完成任务
                             </h5>
                         </div>
                         <br>
@@ -129,11 +146,6 @@
         TaskList.initTaskWidget();
         // 查询当前用户的所有任务，按完成与否显示在对应区域
         initTask();
-        // 设置定时器定时更新任务列表时间
-        // 一分钟更新一次任务列表时间
-        // window.setInterval(function(){
-        //     initTask();
-        // }, 60000);
 
         // 给新增任务的提交按钮绑定点击事件，点击后将表单数据获取并发到后台保存为新任务
         $("#btn-submit").on("click", function () {
@@ -151,11 +163,6 @@
                     initTask();
                     $("#view").show();
                     $("#add-form").hide();
-                    // 设置定时器定时更新任务列表时间
-                    // 一分钟更新一次任务列表时间
-                    // window.setInterval(function(){
-                    //     initTask();
-                    // }, 60000);
                 }
             });
         });
@@ -170,20 +177,8 @@
             $("#view").show();
             clearForm();
             $("#add-form").hide();
-            // 设置定时器定时更新任务列表时间
-            // 一分钟更新一次任务列表时间
-            // window.setInterval(function(){
-            //     initTask();
-            // }, 60000);
         });
     });
-
-    function setInterval() {
-        // 一分钟更新一次任务列表时间
-        window.setInterval(function(){
-            initTask();
-        }, 60000);
-    }
 
     // 查询当前用户的所有任务，按完成与否显示在对应区域
     function initTask() {
@@ -202,10 +197,12 @@
                     $("#unfinished-task-list").empty();
                     for (var i = 0; i < data.length; i++) {
                         var node = getNodeOfTask(data[i]);
-                        if(data[i].finish == '0'){
+                        if(data[i].status == '0'){
                             $("#unfinished-task-list").append(node);
-                        } else {
+                        } else if(data[i].status == '1') {
                             $("#finished-task-list").append(node);
+                        } else{
+                            $("#shenhe-task-list").append(node);
                         }
                     }
                 }
@@ -283,7 +280,6 @@
 
     // 点击新增任务按钮，隐藏任务列表，显示新增表单
     function showForm() {
-        // window.clearInterval();
         $("#view").hide();
         clearForm();
         $("#add-form").show();
@@ -299,9 +295,11 @@
     // 根据查询到的任务信息，拼成列表的子节点返回
     function getNodeOfTask(data) {
         var status;
-        if (data.finish == true) {
-            status = "<span class=\"badge bg-theme\">已完成</span>"; // bg-info, bg-important, bg-warning, bg-success
-        } else {
+        if (data.status == '1') {
+            status = "<span class='badge bg-success'>已完成</span>"; // bg-info, bg-important, bg-warning, bg-success
+        } else if(data.status == '2'){
+            status = "<span class='badge bg-theme'>审核中...</span>"; // bg-info, bg-important, bg-warning, bg-success
+        }else {
             var now = new Date();
             var h = ((data.estimatedTime - now.getTime()) / (1000 * 60 * 60)).toFixed(0);
             var days = Math.floor(h / 24);
