@@ -15,6 +15,7 @@ $(function() {
             for(var i = 0; i < data.length; i++) {
                 var optionNode = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                 $("#managerId").append(optionNode);
+                $("#empId").append(optionNode);
             }
         });
     });

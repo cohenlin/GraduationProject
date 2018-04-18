@@ -1,9 +1,11 @@
 package com.cohen.scheduletracking.leader.service.impl;
 
+import com.cohen.scheduletracking.common.dao.TaskMapper;
 import com.cohen.scheduletracking.common.entity.MessageBody;
 import com.cohen.scheduletracking.entity.EmpProject;
 import com.cohen.scheduletracking.entity.Employee;
 import com.cohen.scheduletracking.entity.Project;
+import com.cohen.scheduletracking.entity.Task;
 import com.cohen.scheduletracking.leader.dao.CommonMapper;
 import com.cohen.scheduletracking.leader.dao.ProjectMapper;
 import com.cohen.scheduletracking.leader.service.EmployeeService;
@@ -29,6 +31,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private TaskMapper taskMapper;
 
     /**
      * 保存当前项目信息，并把此项目绑定到负责人
@@ -101,6 +106,60 @@ public class ProjectServiceImpl implements ProjectService {
         msg.setData(data);
         msg.setStatus("1");
         msg.setBody("检索成功！");
+
+        return msg;
+    }
+
+    @Override
+    public MessageBody getProjectById(int id, MessageBody msg) {
+        Project project = projectMapper.getProjectById(id);
+        if(project != null){
+            List<Task> tasks = taskMapper.listByProId(project.getId());
+            msg.setStatus("1");
+            msg.setBody("数据回显成功！");
+            Map<String,Object> map = new HashMap<>();
+            map.put("project", project);
+            map.put("tasks", tasks);
+            msg.setData(map);
+        }else{
+            msg.setStatus("0");
+            msg.setBody("数据不存在！");
+        }
+        return msg;
+    }
+
+    @Override
+    public MessageBody checkLevel(int pid, HttpSession session, MessageBody msg) {
+        Employee user = (Employee) session.getAttribute("user");
+        boolean b = false;
+        if(user != null){
+            Project project = projectMapper.getProjectById(pid);
+            if(user.getLevel() == 3){// 部门以上的领导
+                b = true;
+            } else if(user.getLevel() == 1) {// 普通员工
+                if(user.getId() == project.getManagerId()){// 如果是管理员，则有权编辑
+                    b = true;
+                }else{
+                    b = false;
+                }
+            } else {// 部门级领导
+                if(user.getId() == project.getManagerId() || user.getId() == project.getCreateUser()){// 是管理或者创建者
+                    b = true;
+                } else {
+                    b = false;
+                }
+            }
+            if(b){
+                msg.setStatus("1");
+                msg.setBody("权限足够！");
+            } else {
+                msg.setStatus("-1");
+                msg.setBody("权限不足！");
+            }
+        }else{
+            msg.setStatus("0");
+            msg.setBody("未登录！");
+        }
 
         return msg;
     }

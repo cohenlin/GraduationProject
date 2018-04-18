@@ -49,4 +49,7 @@
     <select id="getTaskById" parameterType="int" resultMap="task">
         select <include refid="column" /> from `task` as t where t.id = #{id}
     </select>
+    <select id="listByProId" parameterType="int" resultMap="task">
+        select <include refid="column" /> from `task` as t where t.project_id = #{pid} and t.is_delete='0'
+    </select>
 </mapper>

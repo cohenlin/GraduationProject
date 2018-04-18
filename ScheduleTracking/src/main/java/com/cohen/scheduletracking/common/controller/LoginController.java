@@ -38,4 +38,10 @@ public class LoginController {
         msg.setBody("已退出登录！");
         return msg;
     }
+
+    @RequestMapping(value = "checkJurisdiction",method = RequestMethod.GET)
+    public MessageBody checkJurisdiction(MessageBody msg,HttpSession session){
+
+        return null;
+    }
 }

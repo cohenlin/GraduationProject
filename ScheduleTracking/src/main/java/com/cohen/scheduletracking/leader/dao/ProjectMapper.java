@@ -10,9 +10,8 @@ import java.util.List;
 public interface ProjectMapper {
     /**
      * 保存项目信息
-     * 
-     * @param project
-     *            : 项目信息业务实体类
+     *
+     * @param project : 项目信息业务实体类
      * @return
      */
     int insert(Project project);
@@ -20,4 +19,11 @@ public interface ProjectMapper {
     List<Project> list(@Param("id") int id);
 
     List<Project> listByProjectId(@Param("proIds") List<Integer> proIds);
+
+    /**
+     * 根据id查项目信息
+     * @param id
+     * @return
+     */
+    Project getProjectById(@Param("id") int id);
 }

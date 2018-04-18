@@ -66,4 +66,17 @@ public class LoginServiceImpl implements LoginService {
             throw new RuntimeException(this.getClass().getTypeName() + " throw an exception!");
         }
     }
+
+    @Override
+    public MessageBody checkJurisdiction(MessageBody msg, HttpSession session) {
+        Employee user = (Employee) session.getAttribute("user");
+        if(user != null){
+            msg.setStatus("1");
+            msg.setBody("权限获取成功！");
+        } else {
+            msg.setStatus("0");// 未登录
+            msg.setBody("未登录！");
+        }
+        return msg;
+    }
 }

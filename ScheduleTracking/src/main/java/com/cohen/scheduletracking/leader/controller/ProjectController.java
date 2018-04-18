@@ -62,6 +62,7 @@ public class ProjectController {
     /**
      * 上传项目策划案，返回json结果
      */
+    @ResponseBody
     @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
     public String fileUpload(HttpServletRequest request,
                              @RequestParam(value = "file", required = false) MultipartFile file, HttpSession session) {
@@ -113,5 +114,32 @@ public class ProjectController {
     @RequestMapping(value = "getEmpByProId", method = RequestMethod.GET)
     public MessageBody getEmpByProId(@RequestParam("pid") int pid, MessageBody msg) {
         return projectService.getEmpByProId(pid, msg);
+    }
+
+    /**
+     * 项目编辑回显
+     *
+     * @param id
+     * @param msg
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getProjectById", method = RequestMethod.GET)
+    public MessageBody getProjectById(@RequestParam("id") int id, MessageBody msg) {
+        return projectService.getProjectById(id, msg);
+    }
+
+    /**
+     * 校验当前用户是否有权限编辑项目
+     *
+     * @param pid
+     * @param session
+     * @param msg
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "checkLevel", method = RequestMethod.GET)
+    public MessageBody checkLevel(@RequestParam("pid") int pid, HttpSession session, MessageBody msg) {
+        return projectService.checkLevel(pid, session, msg);
     }
 }

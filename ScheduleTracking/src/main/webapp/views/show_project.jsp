@@ -1,25 +1,16 @@
 <!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
 <%@ include file="menu.jsp" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<head>
+    <title>编辑项目</title>
+</head>
 <body>
-<script type="text/javascript">
-    $(function () {
-        $.get("/dept/getAll", {"time": new Date()}, function (data) {
-            for (var i = 0; i < data.length; i++) {
-                var optionNode = "<option value='" + data[i].id + "'>" + data[i].deptName + "</option>";
-                $("#deptId").append(optionNode);
-            }
-        })
-    })
-</script>
-<!--main content start-->
 <section id="container">
     <section id="main-content">
         <section class="wrapper">
             <h3>
-                <i class="fa fa-angle-right"></i> 新增项目
+                <i class="fa fa-angle-right"></i>  编辑项目
             </h3>
             <!-- BASIC FORM ELELEMNTS -->
             <div class="row mt">
@@ -131,51 +122,164 @@
                     </div>
                     <br>
                 </div>
-                    <div class="task-content">
-                        <ul id="finished-task-list" class="task-list">
-                            <li>
-                                <div class='task-title'>
-                                    <input type='checkbox' class='list-child' value='' style='margin-right:10px;'/>
-                                    <span class=\"task-title-sp\">任务内容</span>
-                                    <span class='badge bg-success'>已完成</span>
-                                    <div class='pull-right hidden-phone' style='float:right'>
+                <div class="task-content">
+                    <ul id="finished-task-list" class="task-list">
+                        <li>
+                            <div class='task-title'>
+                                <input type='checkbox' class='list-child' value='' style='margin-right:10px;'/>
+                                <span class=\"task-title-sp\">任务内容</span>
+                                <span class='badge bg-success'>已完成</span>
+                                <div class='pull-right hidden-phone' style='float:right'>
                                     <button onclick='return finishTask()' class='btn btn-success btn-xs'>
-                                    <i class='fa fa-check'></i>
+                                        <i class='fa fa-check'></i>
                                     </button>
                                     <button onclick='return editTask()' class='btn btn-primary btn-xs'>
-                                    <i class='fa fa-pencil'></i>
+                                        <i class='fa fa-pencil'></i>
                                     </button>
                                     <button onclick='return removeTask()' class='btn btn-danger btn-xs'>
-                                    <i class='fa fa-trash-o'></i>
+                                        <i class='fa fa-trash-o'></i>
                                     </button>
-                                    </div>
                                 </div>
-                            </li>
-                            <li>
-                                <div class='task-title'>
-                                    <input type='checkbox' class='list-child' value='' style='margin-right:10px;'/>
-                                    <span class=\"task-title-sp\">任务内容</span>
-                                    <span class='badge bg-success'>已完成</span>
-                                    <div class='pull-right hidden-phone' style='float:right'>
+                            </div>
+                        </li>
+                        <li>
+                            <div class='task-title'>
+                                <input type='checkbox' class='list-child' value='' style='margin-right:10px;'/>
+                                <span class=\"task-title-sp\">任务内容</span>
+                                <span class='badge bg-success'>已完成</span>
+                                <div class='pull-right hidden-phone' style='float:right'>
                                     <button onclick='return finishTask()' class='btn btn-success btn-xs'>
-                                    <i class='fa fa-check'></i>
+                                        <i class='fa fa-check'></i>
                                     </button>
                                     <button onclick='return editTask()' class='btn btn-primary btn-xs'>
-                                    <i class='fa fa-pencil'></i>
+                                        <i class='fa fa-pencil'></i>
                                     </button>
                                     <button onclick='return removeTask()' class='btn btn-danger btn-xs'>
-                                    <i class='fa fa-trash-o'></i>
+                                        <i class='fa fa-trash-o'></i>
                                     </button>
-                                    </div>
                                 </div>
-                            </li>
-                        </ul>
-                    </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </section>
         </section>
         <!--/wrapper -->
     </section>
+
+    <div id="add-form" class="row" hidden>
+        <div class="col-md-12">
+            <section class="task-panel tasks-widget">
+                <div class="panel-body">
+                    <div class="form-group col-sm-12" style="margin-top: 15px;">
+                        <label class="col-sm-3 control-label" style="text-align:right">开始时间</label>
+                        <div class="col-sm-6 input-append date" style="z-index: 10000">
+                            <input id="taskBeginTime" type="text" value=""
+                                   class="form-control form_datetime"
+                                   onchange="onblurCheckIfNull(this, 'taskBeginTimeMsg')"/>
+                        </div>
+                        <div id="taskBeginTimeMsg" class="control-label"></div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="col-sm-3 control-label" style="text-align:right">预计完成</label>
+                        <div class="col-sm-6 input-append date">
+                            <input id="taskEstimatedTime" type="text" value=""
+                                   class="form-control form_datetime"
+                                   onchange="onblurCheckIfNull(this, 'taskEstimatedTimeMsg')"/>
+                        </div>
+                        <div id="taskEstimatedTimeMsg" class="control-label"></div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-3 control-label">指派给</label>
+                        <div class="col-sm-6">
+                            <select id="empId" class="form-control" name="empId"
+                                    onchange="onblurCheckIfNull(this, 'empIdMsg')">
+                                <option value="">请选择</option>
+                            </select>
+                        </div>
+                        <div id="empIdMsg" class="control-label"></div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="col-sm-3 control-label" style="text-align:right">任务信息</label>
+                        <div class="col-sm-6">
+                                <textarea id="taskInfo" cols="4" class="form-control"
+                                          onchange="onblurCheckIfNull(this, 'taskInfoMsg')"></textarea>
+                        </div>
+                        <div id="taskInfoMsg" class="control-label"></div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div class="col-sm-3 col-sm-offset-4">
+                            <div class="col-sm-4">
+                                <button id="btn-submit" type="submit" class="btn btn-success">提交</button>
+                            </div>
+                            <div class="col-sm-4">
+                                <button id="btn-reset" type="button" class="btn btn-warning">重置</button>
+                            </div>
+                            <div class="col-sm-4">
+                                <button id="btn-cancel" type="button" class="btn">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- /col-md-12-->
+    </div>
+
 </section>
-<!-- /MAIN CONTENT -->
-<!--main content end-->
 <jsp:include page="footer.jsp"/>
+</body>
+</html>
+<script>
+    $(function () {
+        $.ajax({
+            url : '/project/getProjectById',
+            type : 'get',
+            data: {
+                "id": window.location.href.split('=')[1],
+                "time": new Date()
+            },
+            success: function(data){
+                if(data.status == '1'){// 数据获取成功！
+
+                } else {// 数据不存在
+                    alert(data.body);
+                }
+            },
+            error: function(data){
+                alert("系统错误！请稍后重试！");
+            }
+        });
+
+        $("#btn-cancel").click(function () {
+            $('#add-form').dialog("close");
+        });
+        $("#btn-reset").click(function () {
+
+        });
+        $("#btn-submit").click(function () {
+            $('#add-form').dialog("close");
+        });
+    })
+
+    // 把项目信息显示到对应的区域
+    function appendProjectToList(project){
+
+    }
+    // 清除任务新增表单
+    function clearForm(){
+
+    }
+
+    function showForm() {
+        $('#add-form').dialog({
+            title: '新增任务',
+            width: 1000,
+            // height: 300,
+            closed: false,
+            cache: false,
+            modal: true,
+        });
+        $("#")
+    }
+</script>

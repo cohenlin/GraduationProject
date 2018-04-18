@@ -54,4 +54,7 @@
     <select id="listByProjectId" resultMap="project">
         select * from project as p where p.id in (<foreach collection="proIds" item="pid" separator=",">#{pid}</foreach>) and is_delete='0'
     </select>
+    <select id="getProjectById" resultMap="project" parameterType="int">
+        select * from project as p where p.id=#{id} and is_delete='0'
+    </select>
 </mapper>

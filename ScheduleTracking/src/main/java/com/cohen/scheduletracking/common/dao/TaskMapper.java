@@ -18,4 +18,11 @@ public interface TaskMapper {
     int delete(@Param("id") int id);
 
     Task getTaskById(@Param("id") int id);
+
+    /**
+     * g根据project id 检索相关所有任务
+     * @param pid
+     * @return
+     */
+    List<Task> listByProId(@Param("pid")int pid);
 }
