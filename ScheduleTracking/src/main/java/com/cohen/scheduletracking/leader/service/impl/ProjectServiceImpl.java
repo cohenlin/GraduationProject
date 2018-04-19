@@ -135,26 +135,25 @@ public class ProjectServiceImpl implements ProjectService {
         if(user != null){
             Project project = projectMapper.getProjectById(pid);
             if(user.getLevel() == 3){// 部门以上的领导
-                b = true;
+                msg.setStatus("2");
+                msg.setBody("权限足够！");
             } else if(user.getLevel() == 1) {// 普通员工
                 if(user.getId() == project.getManagerId()){// 如果是管理员，则有权编辑
-                    b = true;
+                    msg.setStatus("1");
+                    msg.setBody("权限足够！");
                 }else{
-                    b = false;
+                    msg.setStatus("-1");
+                    msg.setBody("权限不足！");
                 }
             } else {// 部门级领导
                 if(user.getId() == project.getManagerId() || user.getId() == project.getCreateUser()){// 是管理或者创建者
-                    b = true;
+                    msg.setStatus("1");
+                    msg.setBody("权限足够！");
                 } else {
                     b = false;
+                    msg.setStatus("-1");
+                    msg.setBody("权限不足！");
                 }
-            }
-            if(b){
-                msg.setStatus("1");
-                msg.setBody("权限足够！");
-            } else {
-                msg.setStatus("-1");
-                msg.setBody("权限不足！");
             }
         }else{
             msg.setStatus("0");

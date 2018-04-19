@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+pageEncoding="UTF-8" %>
 <%@ include file="menu.jsp" %>
 <html>
-<link href="/assets/css/to-do.css" rel="stylesheet">
 <body>
 <!-- **********************************************************************************************************************************************************
   MAIN CONTENT
@@ -18,30 +17,26 @@
             <div>
                 <a onclick="showForm()" class="btn btn-success btn-sm pull-left" href="javascript:void(0)">新建任务</a>
             </div>
-            <!--<div>-->
-                <!--<a class="btn btn-default btn-sm pull-right"-->
-                   <!--href="javascript:void(0)">See All Tasks</a>-->
-            <!--</div>-->
         </div>
         <!-- COMPLEX TO DO LIST -->
         <div id="view" class="row mt">
             <div class="col-md-12">
                 <section class="task-panel tasks-widget">
-                    <div class="panel-heading">
-                        <div class="pull-left">
-                            <h5>
-                                <i class="fa fa-tasks"></i> 未完成任务
-                            </h5>
+                        <div class="panel-heading">
+                            <div class="pull-left">
+                                <h5>
+                                    <i class="fa fa-tasks"></i> 未完成任务
+                                </h5>
+                            </div>
+                            <br>
                         </div>
-                        <br>
-                    </div>
-                    <div class="panel-body">
-                        <div class="task-content">
-                            <ul id="unfinished-task-list" class="task-list">
+                        <div class="panel-body">
+                            <div class="task-content">
+                                <ul id="unfinished-task-list" class="task-list">
 
-                            </ul>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
                 </section>
                 <section class="task-panel tasks-widget">
                     <div class="panel-heading">
@@ -60,7 +55,7 @@
                         </div>
                     </div>
                 </section>
-                <section class="task-panel tasks-widget" style="margin-top: 30px;">
+                <section class="task-panel tasks-widget">
                     <div class="panel-heading">
                         <div class="pull-left">
                             <h5>
@@ -81,14 +76,13 @@
             <!-- /col-md-12-->
         </div>
         <!-- -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
-        <div id="add-form" class="row">
+        <div id="add-form" class="row" hidden>
             <div class="col-md-12">
                 <section class="task-panel tasks-widget">
-
                     <div class="panel-body">
                         <div class="form-group col-sm-12">
                             <label class="col-sm-3 control-label" style="text-align:right">开始时间</label>
-                            <div class="col-sm-6 input-append date">
+                            <div class="col-sm-6 input-append date" style="z-index: 10000;">
                                 <input id="beginTime" type="text" value=""
                                        class="form-control form_datetime"
                                        onchange="onblurCheckIfNull(this, 'beginTimeMsg')"/>
@@ -113,15 +107,15 @@
                             <div id="taskInfoMsg" class="control-label"></div>
                         </div>
                         <div class="form-group col-sm-12">
-                            <div class="col-sm-3 col-sm-offset-4">
-                                <div class="col-sm-4">
-                                    <button id="btn-submit" type="submit" class="btn btn-success">提交</button>
+                            <div class="col-sm-12 col-sm-offset-4">
+                                <div class="col-sm-1">
+                                    <button id="btn-submit" type="submit" class="btn btn-success btn-sm">提交</button>
                                 </div>
-                                <div class="col-sm-4">
-                                    <button id="btn-reset" type="button" class="btn btn-warning">重置</button>
+                                <div class="col-sm-1">
+                                    <button id="btn-reset" type="button" class="btn btn-warning btn-sm">重置</button>
                                 </div>
-                                <div class="col-sm-4">
-                                    <button id="btn-cancel" type="button" class="btn">取消</button>
+                                <div class="col-sm-1">
+                                    <button id="btn-cancel" type="button" class="btn btn-sm">取消</button>
                                 </div>
                             </div>
                         </div>
@@ -139,14 +133,12 @@
 <!-- /MAIN CONTENT -->
 <!--main content end-->
 </section>
-<script src="/assets/js/tasks.js" type="text/javascript"></script>
-
+<jsp:include page="footer.jsp"/>
 <script>
     jQuery(document).ready(function () {
         TaskList.initTaskWidget();
         // 查询当前用户的所有任务，按完成与否显示在对应区域
         initTask();
-
         // 给新增任务的提交按钮绑定点击事件，点击后将表单数据获取并发到后台保存为新任务
         $("#btn-submit").on("click", function () {
             var beginTime = $("#beginTime").val();
@@ -161,8 +153,7 @@
             $.post("/task/insert", args, function (data) {
                 if (data.status == 1) {
                     initTask();
-                    $("#view").show();
-                    $("#add-form").hide();
+                    $("#add-form").dialog("close");
                 }
             });
         });
@@ -173,10 +164,9 @@
         });
 
         // 取消新增任务
-        $("#btn-cancel").on("click", function(){
-            $("#view").show();
+        $("#btn-cancel").on("click", function () {
             clearForm();
-            $("#add-form").hide();
+            $("#add-form").dialog("close");
         });
     });
 
@@ -197,11 +187,11 @@
                     $("#unfinished-task-list").empty();
                     for (var i = 0; i < data.length; i++) {
                         var node = getNodeOfTask(data[i]);
-                        if(data[i].status == '0'){
+                        if (data[i].status == '0') {
                             $("#unfinished-task-list").append(node);
-                        } else if(data[i].status == '1') {
+                        } else if (data[i].status == '1') {
                             $("#finished-task-list").append(node);
-                        } else{
+                        } else {
                             $("#shenhe-task-list").append(node);
                         }
                     }
@@ -215,7 +205,7 @@
 
     // 将任务设置为已完成
     function finishTask(id) {
-        if(confirm("确认设置任务为完成？")){
+        if (confirm("确认设置任务为完成？")) {
             $.ajax({
                 type: 'post',
                 url: '/task/finish',
@@ -235,18 +225,18 @@
 
     // 编辑任务
     function editTask(id) {
-        if(confirm("确定编辑任务？")){
+        if (confirm("确定编辑任务？")) {
             $.ajax({
                 url: "/task/edit",
                 type: "POST",
-                data:{
+                data: {
                     _method: "PUT",
                     "id": id
                 },
-                success: function(data){
+                success: function (data) {
 
                 },
-                error: function(data){
+                error: function (data) {
 
                 }
             });
@@ -255,23 +245,23 @@
 
     // 删除任务
     function removeTask(id) {
-        if(confirm("确认删除此任务？")){
+        if (confirm("确认删除此任务？")) {
             $.ajax({
                 url: "/task/delete",
                 type: "POST",
-                data:{
+                data: {
                     _method: "DELETE",
                     "id": id,
                     "time": new Date()
                 },
-                success: function(data) {
-                    if(data.status == "1"){
+                success: function (data) {
+                    if (data.status == "1") {
                         initTask();// 删除成功后重新加载任务列表！
-                    }else{
+                    } else {
                         alert("删除失败！请重试！");
                     }
                 },
-                error: function(data){
+                error: function (data) {
                     alert("删除失败！请重试！");
                 }
             });
@@ -280,9 +270,15 @@
 
     // 点击新增任务按钮，隐藏任务列表，显示新增表单
     function showForm() {
-        $("#view").hide();
         clearForm();
-        $("#add-form").show();
+        $('#add-form').dialog({
+            title: '新增任务',
+            width: 800,
+            // height: 300,
+            closed: false,
+            cache: false,
+            modal: true,
+        });
     }
 
     // 清空当前新增表单的数据
@@ -297,9 +293,9 @@
         var status;
         if (data.status == '1') {
             status = "<span class='badge bg-success'>已完成</span>"; // bg-info, bg-important, bg-warning, bg-success
-        } else if(data.status == '2'){
+        } else if (data.status == '2') {
             status = "<span class='badge bg-theme'>审核中...</span>"; // bg-info, bg-important, bg-warning, bg-success
-        }else {
+        } else {
             var now = new Date();
             var h = ((data.estimatedTime - now.getTime()) / (1000 * 60 * 60)).toFixed(0);
             var days = Math.floor(h / 24);
@@ -341,13 +337,12 @@
     }
 
     // 传入毫秒值，计算出几天几小时
-    function getTimes(sec){
+    function getTimes(sec) {
         var hours = (sec / (1000 * 60 * 60)).toFixed(0);
         var d = Math.floor(hours / 24);
         var h = hours - d * 24;
         return d.toString() + "天 " + h.toString() + "小时";
     }
 </script>
-<jsp:include page="footer.jsp"/>
 </body>
 </html>

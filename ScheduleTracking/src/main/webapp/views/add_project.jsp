@@ -119,59 +119,59 @@
             </div>
             <!-- col-lg-12-->
             </div>
-            <section class="form-panel" style="margin-top: 30px;">
-                <div style="float: right">
-                    <a onclick="showForm()" class="btn btn-success btn-sm pull-left" href="javascript:void(0)">新建任务</a>
-                </div>
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <h5>
-                            <i class="fa fa-tasks"></i> 项目附属任务
-                        </h5>
-                    </div>
-                    <br>
-                </div>
-                    <div class="task-content">
-                        <ul id="finished-task-list" class="task-list">
-                            <li>
-                                <div class='task-title'>
-                                    <input type='checkbox' class='list-child' value='' style='margin-right:10px;'/>
-                                    <span class=\"task-title-sp\">任务内容</span>
-                                    <span class='badge bg-success'>已完成</span>
-                                    <div class='pull-right hidden-phone' style='float:right'>
-                                    <button onclick='return finishTask()' class='btn btn-success btn-xs'>
-                                    <i class='fa fa-check'></i>
-                                    </button>
-                                    <button onclick='return editTask()' class='btn btn-primary btn-xs'>
-                                    <i class='fa fa-pencil'></i>
-                                    </button>
-                                    <button onclick='return removeTask()' class='btn btn-danger btn-xs'>
-                                    <i class='fa fa-trash-o'></i>
-                                    </button>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class='task-title'>
-                                    <input type='checkbox' class='list-child' value='' style='margin-right:10px;'/>
-                                    <span class=\"task-title-sp\">任务内容</span>
-                                    <span class='badge bg-success'>已完成</span>
-                                    <div class='pull-right hidden-phone' style='float:right'>
-                                    <button onclick='return finishTask()' class='btn btn-success btn-xs'>
-                                    <i class='fa fa-check'></i>
-                                    </button>
-                                    <button onclick='return editTask()' class='btn btn-primary btn-xs'>
-                                    <i class='fa fa-pencil'></i>
-                                    </button>
-                                    <button onclick='return removeTask()' class='btn btn-danger btn-xs'>
-                                    <i class='fa fa-trash-o'></i>
-                                    </button>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-            </section>
+            <%--<section class="form-panel" style="margin-top: 30px;">--%>
+                <%--<div style="float: right">--%>
+                    <%--<a onclick="showForm()" class="btn btn-success btn-sm pull-left" href="javascript:void(0)">新建任务</a>--%>
+                <%--</div>--%>
+                <%--<div class="panel-heading">--%>
+                    <%--<div class="pull-left">--%>
+                        <%--<h5>--%>
+                            <%--<i class="fa fa-tasks"></i> 项目附属任务--%>
+                        <%--</h5>--%>
+                    <%--</div>--%>
+                    <%--<br>--%>
+                <%--</div>--%>
+                    <%--<div class="task-content">--%>
+                        <%--<ul id="finished-task-list" class="task-list">--%>
+                            <%--<li>--%>
+                                <%--<div class='task-title'>--%>
+                                    <%--<input type='checkbox' class='list-child' value='' style='margin-right:10px;'/>--%>
+                                    <%--<span class=\"task-title-sp\">任务内容</span>--%>
+                                    <%--<span class='badge bg-success'>已完成</span>--%>
+                                    <%--<div class='pull-right hidden-phone' style='float:right'>--%>
+                                    <%--<button onclick='return finishTask()' class='btn btn-success btn-xs'>--%>
+                                    <%--<i class='fa fa-check'></i>--%>
+                                    <%--</button>--%>
+                                    <%--<button onclick='return editTask()' class='btn btn-primary btn-xs'>--%>
+                                    <%--<i class='fa fa-pencil'></i>--%>
+                                    <%--</button>--%>
+                                    <%--<button onclick='return removeTask()' class='btn btn-danger btn-xs'>--%>
+                                    <%--<i class='fa fa-trash-o'></i>--%>
+                                    <%--</button>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</li>--%>
+                            <%--<li>--%>
+                                <%--<div class='task-title'>--%>
+                                    <%--<input type='checkbox' class='list-child' value='' style='margin-right:10px;'/>--%>
+                                    <%--<span class=\"task-title-sp\">任务内容</span>--%>
+                                    <%--<span class='badge bg-success'>已完成</span>--%>
+                                    <%--<div class='pull-right hidden-phone' style='float:right'>--%>
+                                    <%--<button onclick='return finishTask()' class='btn btn-success btn-xs'>--%>
+                                    <%--<i class='fa fa-check'></i>--%>
+                                    <%--</button>--%>
+                                    <%--<button onclick='return editTask()' class='btn btn-primary btn-xs'>--%>
+                                    <%--<i class='fa fa-pencil'></i>--%>
+                                    <%--</button>--%>
+                                    <%--<button onclick='return removeTask()' class='btn btn-danger btn-xs'>--%>
+                                    <%--<i class='fa fa-trash-o'></i>--%>
+                                    <%--</button>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</div>--%>
+            <%--</section>--%>
         </section>
         <!--/wrapper -->
     </section>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ include file="menu.jsp" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>编辑项目</title>
@@ -17,6 +17,7 @@
                 <div class="col-lg-12">
                     <div class="form-panel">
                         <div class="form-horizontal style-form">
+                            <input type="hidden" id="pid" value="">
                             <div class="form-group col-sm-6">
                                 <label class="col-sm-3 control-label">项目名称</label>
                                 <div class="col-sm-6">
@@ -116,8 +117,13 @@
                         <div class="panel-heading">
                             <div class="pull-left">
                                 <h5>
-                                    <i class="fa fa-tasks"></i> 未完成任务
+                                    <i class="fa fa-tasks"></i> 项目附属任务
                                 </h5>
+                            </div>
+                            <div class="pull-right add-task-row" style="margin-right: 12px; margin-bottom: 5px;">
+                                <div>
+                                    <a onclick="showForm()" class="btn btn-success btn-sm pull-left" href="javascript:void(0)">新建任务</a>
+                                </div>
                             </div>
                             <br>
                         </div>
@@ -129,37 +135,61 @@
                             </div>
                         </div>
                     </section>
+                </div>
+                <!-- /col-md-12-->
+            </div>
+            <div id="add-form" class="row" hidden>
+                <div class="col-md-12">
                     <section class="task-panel tasks-widget">
-                        <div class="panel-heading">
-                            <div class="pull-left">
-                                <h5>
-                                    <i class="fa fa-tasks"></i> 正在审核任务
-                                </h5>
-                            </div>
-                            <br>
-                        </div>
                         <div class="panel-body">
-                            <div class="task-content">
-                                <ul id="shenhe-task-list" class="task-list">
-
-                                </ul>
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-3 control-label" style="text-align:right">开始时间</label>
+                                <div class="col-sm-6 input-append date" style="z-index: 10000;">
+                                    <input id="taskBeginTime" type="text" value=""
+                                           class="form-control form_datetime"
+                                           onchange="onblurCheckIfNull(this, 'taskBeginTimeMsg')"/>
+                                </div>
+                                <div id="taskBeginTimeMsg" class="control-label"></div>
                             </div>
-                        </div>
-                    </section>
-                    <section class="task-panel tasks-widget" style="margin-top: 30px;">
-                        <div class="panel-heading">
-                            <div class="pull-left">
-                                <h5>
-                                    <i class="fa fa-tasks"></i> 已完成任务
-                                </h5>
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-3 control-label" style="text-align:right">预计完成</label>
+                                <div class="col-sm-6 input-append date">
+                                    <input id="estimatedTime" type="text" value=""
+                                           class="form-control form_datetime"
+                                           onchange="onblurCheckIfNull(this, 'estimatedTimeMsg')"/>
+                                </div>
+                                <div id="estimatedTimeMsg" class="control-label"></div>
                             </div>
-                            <br>
-                        </div>
-                        <div class="panel-body">
-                            <div class="task-content">
-                                <ul id="finished-task-list" class="task-list">
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-3 control-label" style="text-align:right">指派给谁</label>
 
-                                </ul>
+                                <div class="col-sm-6 input-append">
+                                    <select id="empId" class="form-control" name="managerId"
+                                            onchange="onblurCheckIfNull(this, 'empIdMsg')">
+                                    </select>
+                                </div>
+                                <div id="empIdMsg" class="control-label"></div>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-3 control-label" style="text-align:right">任务信息</label>
+                                <div class="col-sm-6">
+                                <textarea id="taskInfo" cols="4" class="form-control"
+                                          onchange="onblurCheckIfNull(this, 'taskInfoMsg')"></textarea>
+                                </div>
+                                <div id="taskInfoMsg" class="control-label"></div>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <div class="col-sm-12 col-sm-offset-4">
+                                    <div class="col-sm-1">
+                                        <button id="btn-submit" type="submit" class="btn btn-success btn-sm">提交</button>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button id="btn-reset" type="button" class="btn btn-warning btn-sm">重置</button>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button id="btn-cancel" type="button" class="btn btn-sm">取消</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -169,66 +199,6 @@
         </section>
         <!--/wrapper -->
     </section>
-
-    <div id="add-form" class="row" hidden>
-        <div class="col-md-12">
-            <section class="task-panel tasks-widget">
-                <div class="panel-body">
-                    <div class="form-group col-sm-12" style="margin-top: 15px;">
-                        <label class="col-sm-3 control-label" style="text-align:right">开始时间</label>
-                        <div class="col-sm-6 input-append date" style="z-index: 10000">
-                            <input id="taskBeginTime" type="text" value=""
-                                   class="form-control form_datetime"
-                                   onchange="onblurCheckIfNull(this, 'taskBeginTimeMsg')"/>
-                        </div>
-                        <div id="taskBeginTimeMsg" class="control-label"></div>
-                    </div>
-                    <div class="form-group col-sm-12">
-                        <label class="col-sm-3 control-label" style="text-align:right">预计完成</label>
-                        <div class="col-sm-6 input-append date">
-                            <input id="taskEstimatedTime" type="text" value=""
-                                   class="form-control form_datetime"
-                                   onchange="onblurCheckIfNull(this, 'taskEstimatedTimeMsg')"/>
-                        </div>
-                        <div id="taskEstimatedTimeMsg" class="control-label"></div>
-                    </div>
-                    <div class="form-group col-sm-6">
-                        <label class="col-sm-3 control-label">指派给</label>
-                        <div class="col-sm-6">
-                            <select id="empId" class="form-control" name="empId"
-                                    onchange="onblurCheckIfNull(this, 'empIdMsg')">
-                                <option value="">请选择</option>
-                            </select>
-                        </div>
-                        <div id="empIdMsg" class="control-label"></div>
-                    </div>
-                    <div class="form-group col-sm-12">
-                        <label class="col-sm-3 control-label" style="text-align:right">任务信息</label>
-                        <div class="col-sm-6">
-                                <textarea id="taskInfo" cols="4" class="form-control"
-                                          onchange="onblurCheckIfNull(this, 'taskInfoMsg')"></textarea>
-                        </div>
-                        <div id="taskInfoMsg" class="control-label"></div>
-                    </div>
-                    <div class="form-group col-sm-12">
-                        <div class="col-sm-3 col-sm-offset-4">
-                            <div class="col-sm-4">
-                                <button id="btn-submit" type="submit" class="btn btn-success">提交</button>
-                            </div>
-                            <div class="col-sm-4">
-                                <button id="btn-reset" type="button" class="btn btn-warning">重置</button>
-                            </div>
-                            <div class="col-sm-4">
-                                <button id="btn-cancel" type="button" class="btn">取消</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-        <!-- /col-md-12-->
-    </div>
-
 </section>
 <jsp:include page="footer.jsp"/>
 </body>
@@ -236,11 +206,13 @@
 <script>
     $(function () {
 
+        // alert("pid" + window.location.href.split('=')[1].split('&')[0])
+        // alert("status"+window.location.href.split('&')[1].split('=')[1]);
         $.ajax({
             url: '/project/getProjectById',
             type: 'get',
             data: {
-                "id": window.location.href.split('=')[1],
+                "id": window.location.href.split('=')[1].split('&')[0],
                 "time": new Date()
             },
             success: function (data) {
@@ -260,12 +232,14 @@
             }
         });
 
+        // 新增任务取消按钮
         $("#btn-cancel").click(function () {
             $('#add-form').dialog("close");
         });
         $("#btn-reset").click(function () {
 
         });
+        // 新增任务提交按钮
         $("#btn-submit").click(function () {
             $('#add-form').dialog("close");
         });
@@ -277,26 +251,9 @@
         if (data.status == '1') {
             status = "<span class='badge bg-success'>已完成</span>"; // bg-info, bg-important, bg-warning, bg-success
         } else if (data.status == '2') {
-            status = "<span class='badge bg-theme'>审核中...</span>"; // bg-info, bg-important, bg-warning, bg-success
+            status = "<span class='badge bg-theme'>审核中</span>"; // bg-info, bg-important, bg-warning, bg-success
         } else {
-            var now = new Date();
-            var h = ((data.estimatedTime - now.getTime()) / (1000 * 60 * 60)).toFixed(0);
-            var days = Math.floor(h / 24);
-            var hours = h - days * 24;// 小时数
-            var color;
-            if (days < 3) {
-                color = "bg-info";
-            }
-            if (days < 1) {
-                color = "bg-important";
-            }
-            if (days >= 3) {
-                color = "bg-warning";
-            }
-            if (days >= 7) {
-                color = "bg-success";
-            }
-            status = "<span class=\"badge " + color + "\">" + days + " 天 " + hours + " 小时</span>";
+            status = "<span class='badge bg-info '>未完成</span>";
         }
         var node = "<li>" +
             "<div class='task-title'>" +
@@ -330,6 +287,7 @@
 
     // 把项目信息显示到对应的区域
     function appendProjectToList(project) {
+        $("#pid").val(project.id);
         $("#projectName").val(project.projectName);// 项目名
         // 获取部门信息拼到下拉框
         $.get("/dept/getAll", {"time": new Date()}, function (data) {
@@ -342,18 +300,26 @@
                 }
                 $("#deptId").append(optionNode);
             }
-        })
+        });
+        if(window.location.href.split('=')[2] == '1'){
+            $("#deptId").prop("disabled", "disabled");
+        }
 
         // 获取部门员工信息拼到下拉框
         $.get("/emp/getByDeptId", {"deptId": project.deptId, "time": new Date()}, function (data) {
+            var optionNode = "<option value=''>请选择</option>";
+            $("#managerId").empty();
+            $("#empId").empty();
+            $("#managerId").append(optionNode);
+            $("#empId").append(optionNode);
             for (var i = 0; i < data.length; i++) {
-                var optionNode;
                 if (data[i].id == project.managerId) {
                     optionNode = "<option value='" + data[i].id + "' selected>" + data[i].name + "</option>";
                 } else {
                     optionNode = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                 }
                 $("#managerId").append(optionNode);
+                $("#empId").append(optionNode);
             }
         });
 
@@ -387,14 +353,14 @@
     }
 
     function showForm() {
+        var pid = $("#pid").val();
         $('#add-form').dialog({
             title: '新增任务',
-            width: 1000,
+            width: 800,
             // height: 300,
             closed: false,
             cache: false,
             modal: true,
         });
-        $("#")
     }
 </script>

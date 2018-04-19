@@ -41,5 +41,6 @@
         src="/assets/js/gritter/js/jquery.gritter.js"></script>
 <script type="text/javascript" src="/assets/js/gritter-conf.js"></script>
 <script type="text/javascript" src="/js/add_project.js"></script>
+<script src="/assets/js/tasks.js" type="text/javascript"></script>
 </body>
 </html>

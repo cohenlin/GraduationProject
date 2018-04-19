@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ include file="menu.jsp" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>编辑项目</title>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ include file="menu.jsp" %>
-<%@ page language="java" contentType="text/html;charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8" %>
 <html>
 <body>
@@ -130,8 +130,8 @@ pageEncoding="UTF-8" %>
                 "time": new Date()
             },
             success: function (data) {
-                if (data.status == '1') {// 权限足够
-                    window.location.href = "/views/edit_project.jsp?id=" + pid;
+                if (data.status == '1' || data.status == '2') {// 权限足够
+                    window.location.href = "/views/edit_project.jsp?id=" + pid + "&status=" + data.status;
                 } else if (data.status == '-1') {// 权限不足
                     alert(data.body);
                 } else {// 未登录
