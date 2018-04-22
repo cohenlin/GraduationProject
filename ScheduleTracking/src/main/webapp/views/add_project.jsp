@@ -81,7 +81,7 @@
                                 </div>
                                 <div id="budgetMsg" class="control-label"></div>
                             </div>
-                            <form id="uploadForm" action="project/fileUpload" method="post"
+                            <form id="uploadForm" action="/project/fileUpload" method="post"
                                   enctype="multipart/form-data">
                                 <div class="form-group col-sm-6">
                                     <label class="col-sm-3 control-label">上传项目策划案</label>

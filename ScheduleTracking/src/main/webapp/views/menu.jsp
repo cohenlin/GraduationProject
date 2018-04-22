@@ -22,6 +22,27 @@
     <link href="/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <link href="/css/easyui.css" rel="stylesheet">
     <link href="/css/jquery-ui.css" rel="stylesheet">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/jquery-1.8.3.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.easyui.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script class="include" type="text/javascript"
+            src="/assets/js/jquery.dcjqaccordion.2.7.js"></script>
+    <script src="/assets/js/jquery.scrollTo.min.js"></script>
+    <script src="/assets/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="/assets/js/jquery.sparkline.js"></script>
+    <!--common script for all pages-->
+    <script src="/assets/js/common-scripts.js"></script>
+    <script src="/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript"
+            src="/assets/js/gritter/js/jquery.gritter.js"></script>
+    <script type="text/javascript" src="/assets/js/gritter-conf.js"></script>
+    <script type="text/javascript" src="/js/add_project.js"></script>
+    <script src="/assets/js/tasks.js" type="text/javascript"></script>
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <![endif]-->
@@ -70,7 +91,7 @@ MAIN SIDEBAR MENU ： 边缘菜单
                 <ul class="sub">
                     <li><a href="/views/add_project.jsp">新增项目</a></li>
                     <li><a href="/views/index.jsp">浏览项目</a></li>
-                    <li><a href="panels.html">修改项目</a></li>
+                    <%--<li><a href="panels.html">修改项目</a></li>--%>
                 </ul>
             </li>
 
@@ -80,51 +101,51 @@ MAIN SIDEBAR MENU ： 边缘菜单
                     <span>任务管理</span>
                 </a>
                 <ul class="sub">
-                    <li><a href="gallery.html">新增任务</a></li>
+                    <%--<li><a href="gallery.html">新增任务</a></li>--%>
                     <li><a id="todo-list" href="/views/todo_list.jsp">任务列表</a></li>
-                    <li><a href="todo_list.html">修改任务</a></li>
+                    <%--<li><a href="todo_list.html">修改任务</a></li>--%>
                 </ul>
             </li>
-            <li class="sub-menu">
-                <a href="javascript:">
-                    <i class="fa fa-book"></i>
-                    <span>待开发</span>
-                </a>
-                <!-- <ul class="sub">
-                    <li><a  href="blank.html">Blank Page</a></li>
-                    <li><a  href="login.html">Login</a></li>
-                    <li><a  href="lock_screen.html">Lock Screen</a></li>
-                </ul> -->
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:">
-                    <i class="fa fa-tasks"></i>
-                    <span>待开发</span>
-                </a>
-                <!-- <ul class="sub">
-                    <li><a  href="form_component.html">Form Components</a></li>
-                </ul> -->
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:">
-                    <i class="fa fa-th"></i>
-                    <span>待开发</span>
-                </a>
-                <!-- <ul class="sub">
-                    <li><a  href="basic_table.html">Basic Table</a></li>
-                    <li><a  href="responsive_table.html">Responsive Table</a></li>
-                </ul> -->
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:">
-                    <i class=" fa fa-bar-chart-o"></i>
-                    <span>待开发</span>
-                </a>
-                <!-- <ul class="sub">
-                    <li><a  href="morris.html">Morris</a></li>
-                    <li><a  href="chartjs.html">Chartjs</a></li>
-                </ul> -->
-            </li>
+            <%--<li class="sub-menu">--%>
+                <%--<a href="javascript:">--%>
+                    <%--<i class="fa fa-book"></i>--%>
+                    <%--<span>待开发</span>--%>
+                <%--</a>--%>
+                <%--<!-- <ul class="sub">--%>
+                    <%--<li><a  href="blank.html">Blank Page</a></li>--%>
+                    <%--<li><a  href="login.html">Login</a></li>--%>
+                    <%--<li><a  href="lock_screen.html">Lock Screen</a></li>--%>
+                <%--</ul> -->--%>
+            <%--</li>--%>
+            <%--<li class="sub-menu">--%>
+                <%--<a href="javascript:">--%>
+                    <%--<i class="fa fa-tasks"></i>--%>
+                    <%--<span>待开发</span>--%>
+                <%--</a>--%>
+                <%--<!-- <ul class="sub">--%>
+                    <%--<li><a  href="form_component.html">Form Components</a></li>--%>
+                <%--</ul> -->--%>
+            <%--</li>--%>
+            <%--<li class="sub-menu">--%>
+                <%--<a href="javascript:">--%>
+                    <%--<i class="fa fa-th"></i>--%>
+                    <%--<span>待开发</span>--%>
+                <%--</a>--%>
+                <%--<!-- <ul class="sub">--%>
+                    <%--<li><a  href="basic_table.html">Basic Table</a></li>--%>
+                    <%--<li><a  href="responsive_table.html">Responsive Table</a></li>--%>
+                <%--</ul> -->--%>
+            <%--</li>--%>
+            <%--<li class="sub-menu">--%>
+                <%--<a href="javascript:">--%>
+                    <%--<i class=" fa fa-bar-chart-o"></i>--%>
+                    <%--<span>待开发</span>--%>
+                <%--</a>--%>
+                <%--<!-- <ul class="sub">--%>
+                    <%--<li><a  href="morris.html">Morris</a></li>--%>
+                    <%--<li><a  href="chartjs.html">Chartjs</a></li>--%>
+                <%--</ul> -->--%>
+            <%--</li>--%>
 
         </ul>
         <!-- 边缘菜单 end-->

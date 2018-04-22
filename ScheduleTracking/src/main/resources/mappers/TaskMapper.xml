@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.cohen.scheduletracking.common.dao.TaskMapper">
+<mapper namespace="com.cohen.scheduletracking.dao.TaskMapper">
     <sql id="column">
           `id`, `task_info`, `begin_time`, `estimated_time`, `end_time`,`emp_id`, `manager_id`, `project_id`,
           `schedule`, `status`, `is_delete`, `create_user`, `create_time`, `update_user`, `update_time`
