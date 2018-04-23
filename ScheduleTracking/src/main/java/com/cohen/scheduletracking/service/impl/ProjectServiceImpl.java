@@ -1,16 +1,11 @@
 package com.cohen.scheduletracking.service.impl;
 
-import com.cohen.scheduletracking.dao.TaskMapper;
-import com.cohen.scheduletracking.entity.MessageBody;
-import com.cohen.scheduletracking.entity.EmpProject;
-import com.cohen.scheduletracking.entity.Employee;
-import com.cohen.scheduletracking.entity.Project;
-import com.cohen.scheduletracking.entity.Task;
 import com.cohen.scheduletracking.dao.CommonMapper;
 import com.cohen.scheduletracking.dao.ProjectMapper;
+import com.cohen.scheduletracking.dao.TaskMapper;
+import com.cohen.scheduletracking.entity.*;
 import com.cohen.scheduletracking.service.EmployeeService;
 import com.cohen.scheduletracking.service.ProjectService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +17,6 @@ import java.util.*;
 @Transactional(rollbackFor = Exception.class)
 public class ProjectServiceImpl implements ProjectService {
 
-    private static Logger logger = Logger.getLogger(ProjectServiceImpl.class);
     @Autowired
     private ProjectMapper projectMapper;
 
@@ -48,11 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setCreateTime(new Date());// 创建日期
         // 执行插入
         int returnValue = projectMapper.insert(project);
-        logger.info("插入project后返回的自增主键 ：" + project.getId());
         commonMapper.insertEmpProject(project.getManagerId(), project.getId(), "1");
-
-        // 打印日志
-        logger.info("执行完插入项目方法后，insert方法返回值为 ：" + returnValue);
 
         return returnValue;
     }
