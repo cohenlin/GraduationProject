@@ -21,8 +21,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date 2018/4/2212:57
  */
 @Configuration // 此类为配置类
-// @ComponentScan(value = "com.cohen.scheduletracking.controller", // 开启包扫描，扫描value指定的包，filters指定的注解类型
-//         includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class)})
 public class SpringMvcConfig implements WebMvcConfigurer {
 
     @Override
