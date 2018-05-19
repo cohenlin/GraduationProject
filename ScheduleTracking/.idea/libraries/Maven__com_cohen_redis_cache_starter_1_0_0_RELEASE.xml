@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.cohen:redis-cache-starter:1.0.0.RELEASE">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cohen/redis-cache-starter/1.0.0.RELEASE/redis-cache-starter-1.0.0.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cohen/redis-cache-starter/1.0.0.RELEASE/redis-cache-starter-1.0.0.RELEASE-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cohen/redis-cache-starter/1.0.0.RELEASE/redis-cache-starter-1.0.0.RELEASE-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
