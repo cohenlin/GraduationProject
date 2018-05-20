@@ -11,7 +11,7 @@
 <section id="main-content">
     <section class="wrapper">
         <h3>
-            <i class="fa fa-angle-right"></i> 待审核项目
+            <i class="fa fa-angle-right"></i> 项目审核列表
         </h3>
         <div class="row mt">
             <div class="col-lg-12">

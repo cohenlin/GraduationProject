@@ -13,6 +13,8 @@ public interface TaskMapper {
 
     List<Task> list(@Param("id") int id);
 
+    List<Task> listByParams(@Param("task") Task task);
+
     int changeTaskToFinish(Map<String, Object> map);
 
     int delete(@Param("id") int id);
@@ -21,16 +23,18 @@ public interface TaskMapper {
 
     /**
      * g根据project id 检索相关所有任务
+     *
      * @param pid
      * @return
      */
-    List<Task> listByProId(@Param("pid")int pid);
+    List<Task> listByProId(@Param("pid") int pid);
 
-    List<Integer> listTaskIdByProId(@Param("pid")int pid);
+    List<Integer> listTaskIdByProId(@Param("pid") int pid);
 
     /**
      * 批量修改任务状态
+     *
      * @return
      */
-    int changeStatuBatch(@Param("ids") List<Integer> ids,@Param("status") String status);
+    int changeStatuBatch(@Param("ids") List<Integer> ids, @Param("status") String status);
 }

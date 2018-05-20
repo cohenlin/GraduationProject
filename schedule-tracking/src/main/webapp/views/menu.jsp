@@ -83,17 +83,20 @@ MAIN SIDEBAR MENU ： 边缘菜单
             <p class="centered"><a href="profile.html"><img src="/assets/img/ui-sam.jpg" class="img-circle" width="60"></a>
             </p>
 
-            <li class="sub-menu">
+            <li style="margin-left: 50px;" class="sub-menu">
                 <a href="/views/add_project.jsp">新增项目</a>
             </li>
-            <li class="sub-menu">
+            <li style="margin-left: 50px;" class="sub-menu">
                 <a href="/views/index.jsp">浏览项目</a>
             </li>
-            <li class="sub-menu">
+            <li style="margin-left: 50px;" class="sub-menu">
                 <a id="todo-list" href="/views/todo_list.jsp">任务列表</a>
             </li>
-            <li class="sub-menu">
-                <a id="project-examine-list" href="/views/project_examine_list.jsp">项目审核列表</a>
+            <li style="margin-left: 50px;" class="sub-menu">
+                <a id="task-examine-list" href="/views/task_examine_list.jsp">任务审核</a>
+            </li>
+            <li style="margin-left: 50px;" class="sub-menu">
+                <a id="project-examine-list" href="/views/project_examine_list.jsp">项目审核</a>
             </li>
         </ul>
         <!-- 边缘菜单 end-->

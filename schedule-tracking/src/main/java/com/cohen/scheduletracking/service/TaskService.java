@@ -2,6 +2,7 @@ package com.cohen.scheduletracking.service;
 
 import com.cohen.scheduletracking.entity.MessageBody;
 import com.cohen.scheduletracking.entity.Task;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -22,6 +23,8 @@ public interface TaskService {
      */
     List<Task> list(HttpSession session);
 
+    MessageBody listExamine(HttpSession session, MessageBody msg);
+
     /**
      * 设置任务为已完成
      *
@@ -29,6 +32,15 @@ public interface TaskService {
      */
     MessageBody changeTaskToFinish(int id, MessageBody msg, HttpSession session);
 
+    /**
+     * 通过审核，设置任务为完成
+     */
+    MessageBody examine(int id, MessageBody msg, HttpSession session);
+
+    /**
+     * 回滚任务
+     */
+    MessageBody rollBack(int id, MessageBody msg, HttpSession session);
     /**
      * 删除当前任务
      *

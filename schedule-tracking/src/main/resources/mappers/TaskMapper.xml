@@ -28,16 +28,45 @@
     <insert id="insert" parameterType="com.cohen.scheduletracking.entity.Task">
         INSERT INTO `task`(<include refid="column"/>) VALUES (#{task.id}, #{task.taskInfo}, #{task.beginTime},
         #{task.estimatedTime}, #{task.endTime},
-        #{task.empId}, #{task.managerId}, #{task.projectId}, #{task.schedule}, #{task.status}, #{task.delete}, #{task.createUser}, #{task.createTime}, #{task.updateUser}, #{task.updateTime})
+        #{task.empId}, #{task.managerId}, #{task.projectId}, #{task.schedule}, #{task.status}, #{task.delete},
+        #{task.createUser}, #{task.createTime}, #{task.updateUser}, #{task.updateTime})
     </insert>
     <select id="list" parameterType="int" resultMap="task">
         select
         <include refid="column"/>
         from `task` as t where t.emp_id = #{id} and t.is_delete = '0';
     </select>
+    <select id="listByParams" parameterType="com.cohen.scheduletracking.entity.Task" resultMap="task">
+        select
+        <include refid="column"/>
+        from `task` as t
+        <where>
+            <if test="task.id != null and task.id > 0">
+                and t.id = #{task.id}
+            </if>
+            <if test="task.empId != null and task.empId > 0">
+                and t.emp_id = #{task.empId}
+            </if>
+            <if test="task.managerId != null and task.managerId > 0">
+                and t.manager_id = #{task.managerId}
+            </if>
+            <if test="task.projectId != null and task.projectId > 0">
+                and t.project_id = #{task.projectId}
+            </if>
+            <if test="task.delete != null and task.delete.trim() != ''">
+                and t.is_delete = #{task.delete}
+            </if>
+            <if test="task.createUser != null and task.createUser > 0">
+                and t.create_user = #{task.createUser}
+            </if>
+            <if test="task.status != null and task.status.trim() != ''">
+                and t.status = #{task.status}
+            </if>
+        </where>
+    </select>
 
     <update id="changeTaskToFinish">
-        update `task` as t set t.status = #{status}, t.end_time = #{endTime} where t.id = #{id}
+        update `task` as t set t.status = #{status}, t.end_time = #{endTime}, t.update_user = #{updateUser}, t.update_time = #{updateTime} where t.id = #{id}
     </update>
     <!--<delete id="delete" parameterType="int">-->
     <!--delete from `task` where id = #{id}-->
@@ -47,16 +76,20 @@
     </update>
     <update id="changeStatuBatch">
         update `task` as t set t.status = #{status} where t.id in
-        <foreach collection="ids" item="id" separator="," open="("  close=")">
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
     </update>
 
     <select id="getTaskById" parameterType="int" resultMap="task">
-        select <include refid="column" /> from `task` as t where t.id = #{id}
+        select
+        <include refid="column"/>
+        from `task` as t where t.id = #{id}
     </select>
     <select id="listByProId" parameterType="int" resultMap="task">
-        select <include refid="column" /> from `task` as t where t.project_id = #{pid} and t.is_delete='0'
+        select
+        <include refid="column"/>
+        from `task` as t where t.project_id = #{pid} and t.is_delete='0'
     </select>
     <select id="listTaskIdByProId" parameterType="int" resultType="int">
         select `id` from `task` as t where t.project_id = #{pid} and t.is_delete='0'

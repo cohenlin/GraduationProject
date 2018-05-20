@@ -23,7 +23,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public MessageBody insert(Task task, MessageBody msg, HttpSession session) {
         SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-        Employee user = (Employee)attribute.getPrimaryPrincipal();
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
         task.setEmpId(user.getId());// 用户自己新增任务,managerId和empId都是自己
         task.setManagerId(user.getId());
         task.setCreateTime(new Date());
@@ -44,16 +44,41 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> list(HttpSession session) {
         SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-        Employee user = (Employee)attribute.getPrimaryPrincipal();
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
         List<Task> result = taskMapper.list(user.getId());
         return result == null ? new ArrayList<>() : result;
+    }
+
+    @Override
+    public MessageBody listExamine(HttpSession session, MessageBody msg) {
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
+        Task task = new Task();// 查询参数
+        task.setDelete("0");// 未删除的
+        task.setStatus("2");// 审核状态的
+        task.setCreateUser(user.getId());// 创建人为当前用户的
+        List<Task> tasks = taskMapper.listByParams(task);
+        task.setManagerId(user.getId());// 管理人为当前用户的
+        task.setCreateUser(0);
+        tasks.addAll(taskMapper.listByParams(task));
+        Map<Integer, Task> map = new HashMap<>();// 去重复的map
+        for (Task t : tasks) {
+            if (!map.containsKey(t.getId())) {
+                map.put(t.getId(), t);
+            }
+        }
+        tasks.clear();
+        tasks.addAll(map.values());
+        msg.setStatus("1");
+        msg.setData(tasks);
+        return msg;
     }
 
     @Override
     public MessageBody changeTaskToFinish(int id, MessageBody msg, HttpSession session) {
         Task task = taskMapper.getTaskById(id);
         SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-        Employee user = (Employee)attribute.getPrimaryPrincipal();
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
         // 封装参数
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
@@ -74,7 +99,7 @@ public class TaskServiceImpl implements TaskService {
                     b = true;
                 }
             }
-            if(b){
+            if (b) {
                 if (taskMapper.changeTaskToFinish(params) == 1) {
                     msg.setStatus("1");
                     msg.setBody("任务已确认完成！");
@@ -87,7 +112,68 @@ public class TaskServiceImpl implements TaskService {
             msg.setStatus("0");
             msg.setBody("该任务不存在！");
         }
+        return msg;
+    }
 
+    /**
+     * 通过审核，设置任务为完成
+     */
+    @Override
+    public MessageBody examine(int id, MessageBody msg, HttpSession session) {
+        Task task = taskMapper.getTaskById(id);
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
+        // 封装参数
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("endTime", new Date());
+        params.put("updateUser", user.getId());
+        params.put("updateTime", new Date());
+        boolean b = false;
+        if (task != null && task.getId() > 0) {// 若该任务有效，则执行后续操作
+            params.put("status", "1");
+            if (taskMapper.changeTaskToFinish(params) == 1) {
+                msg.setStatus("1");
+                msg.setBody("任务已确认完成！");
+            } else {
+                msg.setStatus("0");
+                msg.setBody("任务确认过程出错，请重试！");
+            }
+        } else {// 若该任务无效，则返回错误信息
+            msg.setStatus("0");
+            msg.setBody("该任务不存在！");
+        }
+        return msg;
+    }
+
+    /**
+     * 通过审核，设置任务为完成
+     */
+    @Override
+    public MessageBody rollBack(int id, MessageBody msg, HttpSession session) {
+        Task task = taskMapper.getTaskById(id);
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
+        // 封装参数
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("endTime", new Date());
+        params.put("updateUser", user.getId());
+        params.put("updateTime", new Date());
+        boolean b = false;
+        if (task != null && task.getId() > 0) {
+            params.put("status", "0");
+            if (taskMapper.changeTaskToFinish(params) == 1) {
+                msg.setStatus("1");
+                msg.setBody("任务已回滚！");
+            } else {
+                msg.setStatus("0");
+                msg.setBody("任务回滚出错，请重试！");
+            }
+        } else {// 若该任务无效，则返回错误信息
+            msg.setStatus("0");
+            msg.setBody("该任务不存在！");
+        }
         return msg;
     }
 
@@ -95,13 +181,13 @@ public class TaskServiceImpl implements TaskService {
     public MessageBody delete(int id, MessageBody msg, HttpSession session) {
         Task task = taskMapper.getTaskById(id);
         boolean b = false;
-        if(task != null && task.getId() > 0){
-            if(task.getProjectId() == 0){// 为0属于个人任务
+        if (task != null && task.getId() > 0) {
+            if (task.getProjectId() == 0) {// 为0属于个人任务
                 b = true;
             } else {// 为项目所属任务
                 SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-                Employee user = (Employee)attribute.getPrimaryPrincipal();
-                if(user.getId() == task.getCreateUser() || user.getId() == task.getManagerId()){// 当前用户权限足够，执行
+                Employee user = (Employee) attribute.getPrimaryPrincipal();
+                if (user.getId() == task.getCreateUser() || user.getId() == task.getManagerId()) {// 当前用户权限足够，执行
                     b = true;
                 } else {// 用户权限不足
                     b = false;
@@ -109,7 +195,7 @@ public class TaskServiceImpl implements TaskService {
                     msg.setBody("您的权限不足！");
                 }
             }
-            if(b){
+            if (b) {
                 if (taskMapper.delete(id) == 1) {
                     msg.setStatus("1");
                     msg.setBody("删除成功！");
@@ -137,7 +223,7 @@ public class TaskServiceImpl implements TaskService {
                 msg.setData(task);
             } else {// 若projectId不为0，说明该任务为项目任务，验证当前用户是否权限足够
                 SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-                Employee user = (Employee)attribute.getPrimaryPrincipal();
+                Employee user = (Employee) attribute.getPrimaryPrincipal();
                 if (user.getId() == task.getManagerId() || user.getId() == task.getCreateUser()) {// 若当前用户为项目创建人或者被指定管理人，则可以修改项目
                     msg.setStatus("2");// 项目任务修改设为2
                     msg.setBody("编辑任务请求成功！");
