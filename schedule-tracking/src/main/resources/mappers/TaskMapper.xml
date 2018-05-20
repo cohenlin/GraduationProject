@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cohen.scheduletracking.dao.TaskMapper">
+    <sql id="column">
+          `id`, `task_info`, `begin_time`, `estimated_time`, `end_time`,`emp_id`, `manager_id`, `project_id`,
+          `schedule`, `status`, `is_delete`, `create_user`, `create_time`, `update_user`, `update_time`
+    </sql>
+    <resultMap id="task" type="com.cohen.scheduletracking.entity.Task">
+        <id column="id" property="id"/>
+        <result column="task_info" property="taskInfo"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="estimated_time" property="estimatedTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="emp_id" property="empId"/>
+        <result column="manager_id" property="managerId"/>
+        <result column="project_id" property="projectId"/>
+        <result column="status" property="status"/>
+        <result column="is_delete" property="delete"/>
+        <result column="schedule" property="schedule"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.cohen.scheduletracking.entity.Task">
+        INSERT INTO `task`(<include refid="column"/>) VALUES (#{task.id}, #{task.taskInfo}, #{task.beginTime},
+        #{task.estimatedTime}, #{task.endTime},
+        #{task.empId}, #{task.managerId}, #{task.projectId}, #{task.schedule}, #{task.status}, #{task.delete}, #{task.createUser}, #{task.createTime}, #{task.updateUser}, #{task.updateTime})
+    </insert>
+    <select id="list" parameterType="int" resultMap="task">
+        select
+        <include refid="column"/>
+        from `task` as t where t.emp_id = #{id} and t.is_delete = '0';
+    </select>
+
+    <update id="changeTaskToFinish">
+        update `task` as t set t.status = #{status}, t.end_time = #{endTime} where t.id = #{id}
+    </update>
+    <!--<delete id="delete" parameterType="int">-->
+    <!--delete from `task` where id = #{id}-->
+    <!--</delete>-->
+    <update id="delete" parameterType="int">
+        update `task` as t set t.is_delete = '1' where t.id = #{id}
+    </update>
+
+    <select id="getTaskById" parameterType="int" resultMap="task">
+        select <include refid="column" /> from `task` as t where t.id = #{id}
+    </select>
+    <select id="listByProId" parameterType="int" resultMap="task">
+        select <include refid="column" /> from `task` as t where t.project_id = #{pid} and t.is_delete='0'
+    </select>
+</mapper>
