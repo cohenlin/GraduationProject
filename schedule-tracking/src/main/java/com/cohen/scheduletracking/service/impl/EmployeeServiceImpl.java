@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,6 +29,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> queryById(List<Integer> ids) {
-        return employeeMapper.queryById(ids);
+        return (ids == null || ids.size()  == 0) ? new ArrayList<>() : employeeMapper.queryById(ids);
     }
 }

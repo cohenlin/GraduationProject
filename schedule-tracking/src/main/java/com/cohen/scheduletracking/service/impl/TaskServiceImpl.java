@@ -5,6 +5,8 @@ import com.cohen.scheduletracking.entity.MessageBody;
 import com.cohen.scheduletracking.service.TaskService;
 import com.cohen.scheduletracking.entity.Employee;
 import com.cohen.scheduletracking.entity.Task;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +22,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public MessageBody insert(Task task, MessageBody msg, HttpSession session) {
-        Employee user = (Employee) session.getAttribute("user");
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee)attribute.getPrimaryPrincipal();
         task.setEmpId(user.getId());// 用户自己新增任务,managerId和empId都是自己
         task.setManagerId(user.getId());
         task.setCreateTime(new Date());
@@ -40,15 +43,17 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> list(HttpSession session) {
-        Employee emp = (Employee) session.getAttribute("user");
-        List<Task> result = taskMapper.list(emp.getId());
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee)attribute.getPrimaryPrincipal();
+        List<Task> result = taskMapper.list(user.getId());
         return result == null ? new ArrayList<>() : result;
     }
 
     @Override
     public MessageBody changeTaskToFinish(int id, MessageBody msg, HttpSession session) {
         Task task = taskMapper.getTaskById(id);
-        Employee user = (Employee) session.getAttribute("user");
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee)attribute.getPrimaryPrincipal();
         // 封装参数
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
@@ -94,7 +99,8 @@ public class TaskServiceImpl implements TaskService {
             if(task.getProjectId() == 0){// 为0属于个人任务
                 b = true;
             } else {// 为项目所属任务
-                Employee user = (Employee) session.getAttribute("user");
+                SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+                Employee user = (Employee)attribute.getPrimaryPrincipal();
                 if(user.getId() == task.getCreateUser() || user.getId() == task.getManagerId()){// 当前用户权限足够，执行
                     b = true;
                 } else {// 用户权限不足
@@ -130,7 +136,8 @@ public class TaskServiceImpl implements TaskService {
                 msg.setBody("编辑任务请求成功！");
                 msg.setData(task);
             } else {// 若projectId不为0，说明该任务为项目任务，验证当前用户是否权限足够
-                Employee user = (Employee) session.getAttribute("user");
+                SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+                Employee user = (Employee)attribute.getPrimaryPrincipal();
                 if (user.getId() == task.getManagerId() || user.getId() == task.getCreateUser()) {// 若当前用户为项目创建人或者被指定管理人，则可以修改项目
                     msg.setStatus("2");// 项目任务修改设为2
                     msg.setBody("编辑任务请求成功！");

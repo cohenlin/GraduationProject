@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 public interface ProjectMapper {
@@ -22,8 +23,13 @@ public interface ProjectMapper {
 
     /**
      * 根据id查项目信息
+     *
      * @param id
      * @return
      */
     Project getProjectById(@Param("id") int id);
+
+    int finish(Map<String, Object> params);
+
+    List<Project> listByParams(@Param("project") Project project);
 }

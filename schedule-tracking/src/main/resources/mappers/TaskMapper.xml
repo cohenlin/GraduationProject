@@ -45,11 +45,20 @@
     <update id="delete" parameterType="int">
         update `task` as t set t.is_delete = '1' where t.id = #{id}
     </update>
+    <update id="changeStatuBatch">
+        update `task` as t set t.status = #{status} where t.id in
+        <foreach collection="ids" item="id" separator="," open="("  close=")">
+            #{id}
+        </foreach>
+    </update>
 
     <select id="getTaskById" parameterType="int" resultMap="task">
         select <include refid="column" /> from `task` as t where t.id = #{id}
     </select>
     <select id="listByProId" parameterType="int" resultMap="task">
         select <include refid="column" /> from `task` as t where t.project_id = #{pid} and t.is_delete='0'
+    </select>
+    <select id="listTaskIdByProId" parameterType="int" resultType="int">
+        select `id` from `task` as t where t.project_id = #{pid} and t.is_delete='0'
     </select>
 </mapper>

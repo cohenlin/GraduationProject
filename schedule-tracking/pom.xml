@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cohen</groupId>
-    <artifactId>ScheduleTracking</artifactId>
+    <artifactId>schedule-tracking</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <profiles>
@@ -47,14 +47,6 @@
     </parent>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.apache.camel/camel-shiro-starter -->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.camel</groupId>-->
-            <!--<artifactId>camel-shiro-starter</artifactId>-->
-            <!--<version>2.21.1</version>-->
-        <!--</dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-core -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>

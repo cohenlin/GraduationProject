@@ -5,6 +5,7 @@
 
 <mapper namespace="com.cohen.scheduletracking.dao.ProjectMapper">
     <sql id="columns">
+        `id`,
         `name`,
         introduction,
         dept_id,
@@ -15,7 +16,7 @@
         manager_id,
         scheme_file,
         schedule,
-        is_finish,
+        status,
         create_user,
         create_time,
         update_user,
@@ -34,7 +35,7 @@
         <result column="manager_id" property="managerId" />
         <result column="scheme_file" property="schemeFile" />
         <result column="schedule" property="schedule" />
-        <result column="is_finish" property="finished" />
+        <result column="status" property="status" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
         <result column="update_user" property="updateUser" />
@@ -45,7 +46,7 @@
         insert into project(<include refid="columns" />) values(
             #{projectName}, #{projectDescribe}, #{deptId}, #{beginTime}, #{expectEndTime},
             #{endTime},#{budget}, #{managerId},#{schemeFile}, #{schedule},
-            #{finished}, #{createUser}, #{createTime}, #{updateUser}, #{updateTime}, #{deleted}
+            #{status}, #{createUser}, #{createTime}, #{updateUser}, #{updateTime}, #{deleted}
         );
     </insert>
     <select id="list" parameterType="int" resultMap="project">
@@ -56,5 +57,41 @@
     </select>
     <select id="getProjectById" resultMap="project" parameterType="int">
         select * from project as p where p.id=#{id} and is_delete='0'
+    </select>
+    <update id="finish">
+        update `project` as t set t.status = #{status}, t.update_time = #{updateTime}, t.update_user = #{updateUser}, t.end_time = #{endTime} where t.id = #{id}
+    </update>
+    <!-- 按条件动态查询项目信息 -->
+    <select id="listByParams" parameterType="com.cohen.scheduletracking.entity.Project" resultMap="project">
+        select <include refid="columns" /> from project as p
+            <where>
+                <if test="project.id != null and project.id > 0">
+                    and p.id = #{project.id}
+                </if>
+                <if test="project.projectName != null and project.projectName.trim() != ''">
+                    and p.name like #{project.projectName}
+                </if>
+                <if test="project.deptId != null and project.deptId > 0">
+                    and p.dept_id = #{project.deptId}
+                </if>
+                <if test="project.beginTime != null">
+                    and p.begin_time &lt; #{project.beginTime}
+                </if>
+                <if test="project.endTime != null">
+                    and p.end_time &gt; #{project.endTime}
+                </if>
+                <if test="project.managerId != null and project.managerId > 0">
+                    and p.manager_id = #{project.managerId}
+                </if>
+                <if test="project.status != null and project.status.trim() != ''">
+                    and p.status = #{project.status}
+                </if>
+                <if test="project.createUser != null and project.createUser > 0">
+                    and p.create_user = #{project.createUser}
+                </if>
+                <if test="project.deleted != null and project.deleted.trim() != ''">
+                    and p.is_delete = #{project.deleted}
+                </if>
+            </where>
     </select>
 </mapper>

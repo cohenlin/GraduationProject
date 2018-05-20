@@ -11,9 +11,9 @@ import java.util.Date;
 
 /**
  * 封装项目信息的实体类
- * 
+ *
  * @author 林金成
- *         2018年4月3日
+ * 2018年4月3日
  */
 @Validated
 public class Project implements Serializable {
@@ -35,18 +35,35 @@ public class Project implements Serializable {
     @NotBlank(message = "请提交策划案！")
     private String schemeFile;// 项目策划文件
     private String schedule;// 当前进度
-    private String finished;// 是否完成
+    private String status;// 当前状态, 0: 未完成, 1: 已完成, 2: 待审核
     private int createUser;// 创建人
     private Date createTime;// 创建时间
     private int updateUser;// 修改人
     private Date updateTime;// 修改时间
     private String deleted;// 逻辑删除
+    private int peopleNum;
 
     @Override
     public String toString() {
-        return "Project [projectName=" + projectName + ", deptId=" + deptId + ", beginTime=" + beginTime
-                + ", expectEndTime=" + expectEndTime + ", budget=" + budget + ", managerId=" + managerId
-                + ", projectDescribe=" + projectDescribe + "]";
+        return "Project{" +
+                "id=" + id +
+                ", projectName='" + projectName + '\'' +
+                ", deptId=" + deptId +
+                ", beginTime=" + beginTime +
+                ", expectEndTime=" + expectEndTime +
+                ", endTime=" + endTime +
+                ", budget=" + budget +
+                ", managerId=" + managerId +
+                ", projectDescribe='" + projectDescribe + '\'' +
+                ", schemeFile='" + schemeFile + '\'' +
+                ", schedule='" + schedule + '\'' +
+                ", status='" + status + '\'' +
+                ", createUser=" + createUser +
+                ", createTime=" + createTime +
+                ", updateUser=" + updateUser +
+                ", updateTime=" + updateTime +
+                ", deleted='" + deleted + '\'' +
+                '}';
     }
 
     public int getId() {
@@ -169,12 +186,12 @@ public class Project implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getFinished() {
-        return finished;
+    public String getStatus() {
+        return status;
     }
 
-    public void setFinished(String finished) {
-        this.finished = finished;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDeleted() {
@@ -183,5 +200,13 @@ public class Project implements Serializable {
 
     public void setDeleted(String deleted) {
         this.deleted = deleted;
+    }
+
+    public int getPeopleNum() {
+        return peopleNum;
+    }
+
+    public void setPeopleNum(int peopleNum) {
+        this.peopleNum = peopleNum;
     }
 }

@@ -85,82 +85,16 @@ MAIN SIDEBAR MENU ： 边缘菜单
 
             <li class="sub-menu">
                 <a href="/views/add_project.jsp">新增项目</a>
-                <%--<a href="javascript:">--%>
-                    <%--<i class="fa fa-desktop"></i>--%>
-                    <%--<span>项目管理</span>--%>
-                <%--</a>--%>
-                <%--<ul class="sub">--%>
-                    <%--<li><a href="/views/add_project.jsp">新增项目</a></li>--%>
-                    <%--<li><a href="/views/index.jsp">浏览项目</a></li>--%>
-                    <%--&lt;%&ndash;<li><a href="panels.html">修改项目</a></li>&ndash;%&gt;--%>
-                <%--</ul>--%>
             </li>
             <li class="sub-menu">
                 <a href="/views/index.jsp">浏览项目</a>
-                <%--<a href="javascript:">--%>
-                <%--<i class="fa fa-desktop"></i>--%>
-                <%--<span>项目管理</span>--%>
-                <%--</a>--%>
-                <%--<ul class="sub">--%>
-                <%--<li><a href="/views/add_project.jsp">新增项目</a></li>--%>
-                <%--<li><a href="/views/index.jsp">浏览项目</a></li>--%>
-                <%--&lt;%&ndash;<li><a href="panels.html">修改项目</a></li>&ndash;%&gt;--%>
-                <%--</ul>--%>
             </li>
-
             <li class="sub-menu">
                 <a id="todo-list" href="/views/todo_list.jsp">任务列表</a>
-                <%--<a href="javascript:">--%>
-                    <%--<i class="fa fa-cogs"></i>--%>
-                    <%--<span>任务管理</span>--%>
-                <%--</a>--%>
-                <%--<ul class="sub">--%>
-                    <%--&lt;%&ndash;<li><a href="gallery.html">新增任务</a></li>&ndash;%&gt;--%>
-                    <%--<li><a id="todo-list" href="/views/todo_list.jsp">任务列表</a></li>--%>
-                    <%--&lt;%&ndash;<li><a href="todo_list.html">修改任务</a></li>&ndash;%&gt;--%>
-                <%--</ul>--%>
             </li>
-            <%--<li class="sub-menu">--%>
-                <%--<a href="javascript:">--%>
-                    <%--<i class="fa fa-book"></i>--%>
-                    <%--<span>待开发</span>--%>
-                <%--</a>--%>
-                <%--<!-- <ul class="sub">--%>
-                    <%--<li><a  href="blank.html">Blank Page</a></li>--%>
-                    <%--<li><a  href="login.html">Login</a></li>--%>
-                    <%--<li><a  href="lock_screen.html">Lock Screen</a></li>--%>
-                <%--</ul> -->--%>
-            <%--</li>--%>
-            <%--<li class="sub-menu">--%>
-                <%--<a href="javascript:">--%>
-                    <%--<i class="fa fa-tasks"></i>--%>
-                    <%--<span>待开发</span>--%>
-                <%--</a>--%>
-                <%--<!-- <ul class="sub">--%>
-                    <%--<li><a  href="form_component.html">Form Components</a></li>--%>
-                <%--</ul> -->--%>
-            <%--</li>--%>
-            <%--<li class="sub-menu">--%>
-                <%--<a href="javascript:">--%>
-                    <%--<i class="fa fa-th"></i>--%>
-                    <%--<span>待开发</span>--%>
-                <%--</a>--%>
-                <%--<!-- <ul class="sub">--%>
-                    <%--<li><a  href="basic_table.html">Basic Table</a></li>--%>
-                    <%--<li><a  href="responsive_table.html">Responsive Table</a></li>--%>
-                <%--</ul> -->--%>
-            <%--</li>--%>
-            <%--<li class="sub-menu">--%>
-                <%--<a href="javascript:">--%>
-                    <%--<i class=" fa fa-bar-chart-o"></i>--%>
-                    <%--<span>待开发</span>--%>
-                <%--</a>--%>
-                <%--<!-- <ul class="sub">--%>
-                    <%--<li><a  href="morris.html">Morris</a></li>--%>
-                    <%--<li><a  href="chartjs.html">Chartjs</a></li>--%>
-                <%--</ul> -->--%>
-            <%--</li>--%>
-
+            <li class="sub-menu">
+                <a id="project-examine-list" href="/views/project_examine_list.jsp">项目审核列表</a>
+            </li>
         </ul>
         <!-- 边缘菜单 end-->
     </div>

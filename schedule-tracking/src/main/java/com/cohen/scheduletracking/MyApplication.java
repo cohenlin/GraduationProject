@@ -20,8 +20,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class MyApplication {
 
     public static void main(String[] args) throws Exception {
-        ConfigurableApplicationContext context = SpringApplication.run(MyApplication.class, args);
-//        EmailService service = context.getBean(EmailService.class);
-//        service.sendUrlForPasswordChange("734196912@qq.com", "root", new MessageBody());
+        SpringApplication.run(MyApplication.class, args);
     }
 }

@@ -5,6 +5,8 @@ import com.cohen.scheduletracking.entity.MessageBody;
 import com.cohen.scheduletracking.service.LoginService;
 import com.cohen.scheduletracking.entity.Employee;
 import com.cohen.scheduletracking.utils.MD5Util;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,7 +84,8 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public MessageBody checkJurisdiction(MessageBody msg, HttpSession session) {
-        Employee user = (Employee) session.getAttribute("user");
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee)attribute.getPrimaryPrincipal();
         if (user != null) {
             msg.setStatus("1");
             msg.setBody("权限获取成功！");

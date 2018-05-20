@@ -25,4 +25,12 @@ public interface TaskMapper {
      * @return
      */
     List<Task> listByProId(@Param("pid")int pid);
+
+    List<Integer> listTaskIdByProId(@Param("pid")int pid);
+
+    /**
+     * 批量修改任务状态
+     * @return
+     */
+    int changeStatuBatch(@Param("ids") List<Integer> ids,@Param("status") String status);
 }

@@ -38,7 +38,7 @@ public class ProjectServiceImpl implements ProjectService {
     public Integer save(Project project) {
         // 给Project填充其余属性
         project.setSchedule("0%");// 项目进度
-        project.setFinished("0");// 是否完成
+        project.setStatus("0");// 是否完成
         project.setDeleted("0");// 是否已删除
         project.setCreateUser(0);// 创建人
         project.setCreateTime(new Date());// 创建日期
@@ -58,11 +58,8 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     public MessageBody list(MessageBody msg, HttpSession session) {
-        Employee user = (Employee) session.getAttribute("user");
-        if (user == null) {
-            SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-            user = (Employee)attribute.getPrimaryPrincipal();
-        }
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
         List<EmpProject> empProjects = commonMapper.queryByEmpId(user.getId());// 员工所属项目
         List<Integer> proIds = new ArrayList<>();
         for (EmpProject ep :
@@ -71,7 +68,19 @@ public class ProjectServiceImpl implements ProjectService {
                 proIds.add(ep.getProId());
             }
         }
-        List<Project> list = projectMapper.listByProjectId(proIds);// 查询出当前用户关联的项目
+        List<Project> list = null;
+        if (proIds == null || proIds.size() == 0) {
+            list = new ArrayList<>();
+        } else {
+            list = projectMapper.listByProjectId(proIds);// 查询出当前用户关联的项目
+        }
+        if (list.size() > 0) {// 如果有项目信息，统计一下项目的参与人数
+            for (Project p : list) {
+                List<EmpProject> eps = commonMapper.queryByProId(p.getId());
+                p.setPeopleNum(eps.size());
+            }
+
+        }
         if (list != null) {
             msg.setStatus("1");// 检索成功！
             msg.setBody("检索成功！");
@@ -126,7 +135,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public MessageBody checkLevel(int pid, HttpSession session, MessageBody msg) {
-        Employee user = (Employee) session.getAttribute("user");
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
         boolean b = false;
         if (user != null) {
             Project project = projectMapper.getProjectById(pid);
@@ -156,6 +166,167 @@ public class ProjectServiceImpl implements ProjectService {
             msg.setBody("未登录！");
         }
 
+        return msg;
+    }
+
+    /**
+     * 设置任务为审核状态
+     *
+     * @param id
+     * @param msg
+     * @param session
+     * @return
+     */
+    @Override
+    public MessageBody examine(int id, MessageBody msg, HttpSession session) {
+        Project project = projectMapper.getProjectById(id);
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
+        // 封装参数
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("endTime", new Date());
+        params.put("updateUser", user.getId());
+        params.put("updateTime", new Date());
+        boolean b = false;
+        if (project != null && project.getId() > 0) {// 若该任务有效，则执行后续操作
+            // 判断当前用户是否为项目的管理者
+            if (project.getCreateUser() == user.getId() || project.getManagerId() == user.getId()) {
+                // 是该项目的管理者
+                params.put("status", "2");// 审核状态
+                b = true;
+            } else {
+                // 不是管理者
+                msg.setStatus("-1");
+                msg.setBody("权限不足！");
+            }
+        } else {// 若该任务无效，则返回错误信息
+            msg.setStatus("0");
+            msg.setBody("项目不存在！");
+        }
+        if (b) {
+            if (projectMapper.finish(params) == 1) {// 设置状态为审核
+                // 将项目下属任务批量设置为审核
+                List<Integer> ids = taskMapper.listTaskIdByProId(project.getId());// 获取当前项目所有的关联ID
+                taskMapper.changeStatuBatch(ids, "2");// 批量设置任务为审核状态
+                msg.setStatus("1");
+                msg.setBody("设置成功！");
+            } else {
+                msg.setStatus("0");
+                msg.setBody("设置失败！请稍后重试！");
+            }
+        }
+
+        return msg;
+    }
+
+    /**
+     * 设置任务为完成状态
+     */
+    @Override
+    public MessageBody finish(int id, MessageBody msg, HttpSession session) {
+        Project project = projectMapper.getProjectById(id);
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
+        // 封装参数
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("endTime", new Date());
+        params.put("updateUser", user.getId());
+        params.put("updateTime", new Date());
+        boolean b = false;
+        if (project != null && project.getId() > 0) {// 若该任务有效，则执行后续操作
+            // 判断当前用户是否为项目的管理者
+            params.put("status", "1");// 设置为完成状态
+            b = true;
+        } else {// 若该任务无效，则返回错误信息
+            msg.setStatus("0");
+            msg.setBody("项目不存在！");
+        }
+        if (b) {
+            if (projectMapper.finish(params) == 1) {// 设置状态为审核
+                // 将项目下属任务批量设置为审核
+                List<Integer> ids = taskMapper.listTaskIdByProId(project.getId());// 获取当前项目所有的关联ID
+                if (ids != null && ids.size() > 0) {
+                    taskMapper.changeStatuBatch(ids, "1");// 批量设置任务为完成状态
+                }
+                msg.setStatus("1");
+                msg.setBody("设置成功！");
+            } else {
+                msg.setStatus("0");
+                msg.setBody("设置失败！请稍后重试！");
+            }
+        }
+        return msg;
+    }
+
+    /**
+     * 回滚项目状态至未完成
+     */
+    @Override
+    public MessageBody rollBack(int id, MessageBody msg, HttpSession session) {
+        Project project = projectMapper.getProjectById(id);
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
+        // 封装参数
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("endTime", new Date());
+        params.put("updateUser", user.getId());
+        params.put("updateTime", new Date());
+        boolean b = false;
+        if (project != null && project.getId() > 0) {// 若该任务有效，则执行后续操作
+            // 判断当前用户是否为项目的管理者
+            params.put("status", "0");// 设置为完成状态
+            b = true;
+        } else {// 若该任务无效，则返回错误信息
+            msg.setStatus("0");
+            msg.setBody("项目不存在！");
+        }
+        if (b) {
+            if (projectMapper.finish(params) == 1) {// 设置状态为未完成
+                // 将项目下属任务批量设置为审核
+                List<Integer> ids = taskMapper.listTaskIdByProId(project.getId());// 获取当前项目所有的关联ID
+                if (ids != null && ids.size() > 0) {
+                    taskMapper.changeStatuBatch(ids, "0");// 批量设置任务为未完成状态
+                }
+                msg.setStatus("1");
+                msg.setBody("设置成功！");
+            } else {
+                msg.setStatus("0");
+                msg.setBody("设置失败！请稍后重试！");
+            }
+        }
+
+        return msg;
+    }
+
+    @Override
+    public MessageBody delete(int id, MessageBody msg, HttpSession session) {
+        return null;
+    }
+
+    @Override
+    public MessageBody listExamine(MessageBody msg, HttpSession session) {
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
+        Project project = new Project();// 查询条件
+        project.setCreateUser(user.getId());// 创建人为当前用户
+        project.setDeleted("0");// 没有被删除的
+        project.setStatus("2");// 当前状态,2为审核状态
+        List<Project> projects = projectMapper.listByParams(project);
+        if (projects == null) {
+            projects = new ArrayList<>();
+        }
+        if (projects.size() > 0) {// 如果有项目信息，统计一下项目的参与人数
+            for (Project p : projects) {
+                List<EmpProject> eps = commonMapper.queryByProId(p.getId());
+                p.setPeopleNum(eps.size());
+            }
+
+        }
+        msg.setStatus("1");
+        msg.setData(projects);
         return msg;
     }
 }

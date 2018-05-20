@@ -12,3 +12,4 @@ mail:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+spring-profiles-active: dev

@@ -126,4 +126,48 @@ public class ProjectController {
     public MessageBody checkLevel(@RequestParam("pid") int pid, HttpSession session, MessageBody msg) {
         return projectService.checkLevel(pid, session, msg);
     }
+
+    /**
+     * 将当前任务设置为完成，若为个人任务，直接设置为完成，若为项目任务，则进入审核状态
+     *
+     * @return
+     */
+    @RequestMapping(value = "finish", method = RequestMethod.PUT)
+    public MessageBody finish(@RequestParam("id") int id, MessageBody msg, HttpSession session) {
+        return projectService.finish(id, msg, session);
+    }
+
+    /**
+     * 审核项目，改为完成状态
+     */
+    @RequestMapping(value = "rollBack", method = RequestMethod.PUT)
+    public MessageBody rollBack(@RequestParam("id") int id, MessageBody msg, HttpSession session) {
+        return projectService.rollBack(id, msg, session);
+    }
+
+    /**
+     * 审核项目，改为完成状态
+     */
+    @RequestMapping(value = "examine", method = RequestMethod.PUT)
+    public MessageBody examine(@RequestParam("id") int id, MessageBody msg, HttpSession session) {
+        return projectService.examine(id, msg, session);
+    }
+
+    /**
+     * 点击删除任务按钮，认证用户权限，若通过则删除，否则提示权限不足
+     *
+     * @return
+     */
+    @RequestMapping(value = "delete", method = RequestMethod.DELETE)
+    public MessageBody delete(@RequestParam("id") int id, MessageBody msg, HttpSession session) {
+        return projectService.delete(id, msg, session);
+    }
+
+    /**
+     * 查询显示所有当前账户相关待审核项目
+     */
+    @RequestMapping(value = "listExamine", method = RequestMethod.GET)
+    public MessageBody listExamine(MessageBody msg, HttpSession session) {
+        return projectService.listExamine(msg, session);
+    }
 }
