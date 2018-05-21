@@ -9,12 +9,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>登录</title>
-    <!-- Bootstrap core CSS -->
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap.css" rel="stylesheet">
-    <!--external css-->
     <link href="${pageContext.request.contextPath}/assets/font-awesome/css/font-awesome.css" rel="stylesheet"/>
-
-    <!-- Custom styles for this template -->
     <link href="${pageContext.request.contextPath}/assets/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/css/style-responsive.css" rel="stylesheet">
 </head>
@@ -63,7 +59,7 @@
                                    autocomplete="off" class="form-control placeholder-no-fix"/>
                         </div>
                         <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-default"
+                            <button data-dismiss="modal" id="btn-cancel" class="btn btn-default"
                                     type="button">关闭
                             </button>
                             <button id="btn-submit" class="btn btn-theme" type="button">提交</button>
@@ -105,6 +101,9 @@
                 success: function (data) {
                     switch (data.status) {
                         case "1":// 发送成功
+                            var emailLoginUrl = data.data;
+                            alert("发送成功！即将跳转至邮箱登录页面！");
+                            window.location.href = emailLoginUrl;
                             break;
                         case "0":// 发送失败
                             break;

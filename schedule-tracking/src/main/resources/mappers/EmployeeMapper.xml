@@ -18,4 +18,8 @@
     <select id="queryById" parameterType="list" resultType="com.cohen.scheduletracking.entity.Employee">
         select * from employee as e where e.id in (<foreach collection="ids" item="id" separator=",">#{id}</foreach>) and e.is_valid='1'
     </select>
+
+    <update id="changePassword">
+        update `employee` as e set e.password = #{password} where e.user_name = #{username} and e.email = #{email}
+    </update>
 </mapper>

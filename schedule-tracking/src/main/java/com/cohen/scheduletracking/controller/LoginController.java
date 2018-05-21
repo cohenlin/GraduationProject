@@ -6,6 +6,7 @@ import com.cohen.scheduletracking.service.EmailService;
 import com.cohen.scheduletracking.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -51,6 +52,13 @@ public class LoginController {
     @RequestMapping(value = "findPassword", method = RequestMethod.POST)
     public MessageBody findPassword(@RequestParam("email") String email, @RequestParam("userName") String userName, MessageBody msg) {
         return emailService.sendUrlForPasswordChange(email, userName, msg);
+    }
+
+    @RequestMapping("changePassword")
+    public String changePassword(@RequestParam("userName") String userName, @RequestParam("code") String code, ModelMap map) {
+        map.put("userName", userName);
+        map.put("code", code);
+        return "change_password";
     }
 
     @RequestMapping("403")

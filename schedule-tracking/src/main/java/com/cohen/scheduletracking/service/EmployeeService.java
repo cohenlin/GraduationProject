@@ -1,8 +1,10 @@
 package com.cohen.scheduletracking.service;
 
 import com.cohen.scheduletracking.entity.Employee;
+import com.cohen.scheduletracking.entity.MessageBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工信息相关业务
@@ -29,4 +31,6 @@ public interface EmployeeService {
      * @return
      */
     List<Employee> queryById(List<Integer> ids);
+
+    MessageBody changePassword(Map<String, String> map, MessageBody msg);
 }

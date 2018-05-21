@@ -1,5 +1,6 @@
-package com.cohen.scheduletracking.common.shiro;
+package com.cohen.scheduletracking.config;
 
+import com.cohen.scheduletracking.common.shiro.MyRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -41,6 +42,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/assets/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
+        filterChainDefinitionMap.put("/changePassword", "anon");
+        filterChainDefinitionMap.put("/findPassword", "anon");
+        filterChainDefinitionMap.put("/emp/changePassword", "anon");
         // 登出
         filterChainDefinitionMap.put("/logout", "logout");
         shiroFilter.setLoginUrl("/login");
