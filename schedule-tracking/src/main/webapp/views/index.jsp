@@ -53,7 +53,6 @@
 <!-- /MAIN CONTENT -->
 <!--main content end-->
 </section>
-<jsp:include page="footer.jsp"/>
 <script>
     $(function () {
         init();

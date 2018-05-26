@@ -40,6 +40,7 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = shiroFilter.getFilterChainDefinitionMap();
         // 资源文件放行
         filterChainDefinitionMap.put("/assets/**", "anon");
+        filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/changePassword", "anon");

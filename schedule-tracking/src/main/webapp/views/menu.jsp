@@ -105,11 +105,7 @@ MAIN SIDEBAR MENU ： 边缘菜单
 <script>
     $(function () {
         $("#btn-logout").on("click", function () {
-            $.post("/logout", {"time": new Date()}, function (data) {
-                if (data.status == "1") {
-                    window.location.href = "http://localhost:8080/login.jsp";
-                }
-            });
+            window.location.pathname = "/logout";
         })
     })
 </script>

@@ -31,18 +31,13 @@ public class LoginController {
 //    }
 
     @RequestMapping(value = "login")
-    public String login(Employee emp, HttpSession session, MessageBody msg) {
+    public String login(Employee emp) {
         return "login";
     }
 
-    @ResponseBody
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public MessageBody logout(HttpSession session, MessageBody msg) {
-        System.out.println("logout");
-        session.setAttribute("user", null);
-        msg.setStatus("1");
-        msg.setBody("已退出登录！");
-        return msg;
+    @RequestMapping(value = "logout")
+    public String logout() {
+        return "login";
     }
 
     /**
