@@ -84,19 +84,19 @@ MAIN SIDEBAR MENU ： 边缘菜单
             </p>
 
             <li style="margin-left: 50px;" class="sub-menu">
-                <a href="/views/add_project.jsp">新增项目</a>
+                <a href="/menu/project/add">新增项目</a>
             </li>
             <li style="margin-left: 50px;" class="sub-menu">
-                <a href="/views/index.jsp">浏览项目</a>
+                <a href="/menu/project/list">浏览项目</a>
             </li>
             <li style="margin-left: 50px;" class="sub-menu">
-                <a id="todo-list" href="/views/todo_list.jsp">任务列表</a>
+                <a id="todo-list" href="/menu/task/list">任务列表</a>
             </li>
             <li style="margin-left: 50px;" class="sub-menu">
-                <a id="task-examine-list" href="/views/task_examine_list.jsp">任务审核</a>
+                <a id="task-examine-list" href="/menu/task/listExamine">任务审核</a>
             </li>
             <li style="margin-left: 50px;" class="sub-menu">
-                <a id="project-examine-list" href="/views/project_examine_list.jsp">项目审核</a>
+                <a id="project-examine-list" href="/menu/project/listExamine">项目审核</a>
             </li>
         </ul>
         <!-- 边缘菜单 end-->

@@ -64,6 +64,10 @@
                 "time": new Date()
             },
             success: function (data) {
+                if(data.status == "403"){
+                    window.location.pathname = "/403";
+                    return;
+                }
                 var list = data.data;
                 $("#tbody").empty();
                 for (var i = 0; i < list.length; i++) {
@@ -71,7 +75,7 @@
                 }
             },
             error: function (data) {
-                alert("error");
+                window.location.pathname = "/500";
             }
         });
     }

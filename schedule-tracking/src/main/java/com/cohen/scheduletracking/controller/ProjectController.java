@@ -4,6 +4,12 @@ import com.cohen.scheduletracking.entity.MessageBody;
 import com.cohen.scheduletracking.entity.Project;
 import com.cohen.scheduletracking.service.ProjectService;
 import com.cohen.scheduletracking.utils.StringUtils;
+import org.apache.shiro.ShiroException;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -170,4 +176,19 @@ public class ProjectController {
     public MessageBody listExamine(MessageBody msg, HttpSession session) {
         return projectService.listExamine(msg, session);
     }
+
+//    @ExceptionHandler(value = {ShiroException.class})
+//    @ResponseBody
+//    public MessageBody exceptionHandler(Exception e) {
+//        MessageBody msg = new MessageBody();
+//        if(e instanceof AuthorizationException){
+//            msg.setStatus("403");
+//            msg.setBody("您没有访问权限， 请联系管理员！");
+//        }
+//        if(e instanceof AuthenticationException){
+//            msg.setStatus("304");
+//            msg.setBody("您没有认证， 请登录！");
+//        }
+//        return msg;
+//    }
 }

@@ -3,8 +3,11 @@ package com.cohen.scheduletracking.config;
 import com.cohen.scheduletracking.common.shiro.MyRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSecurityManager;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -43,6 +46,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
+//        filterChainDefinitionMap.put("/menu/**", "anon");
         filterChainDefinitionMap.put("/changePassword", "anon");
         filterChainDefinitionMap.put("/findPassword", "anon");
         filterChainDefinitionMap.put("/emp/changePassword", "anon");
@@ -55,5 +59,33 @@ public class ShiroConfig {
         shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
         shiroFilter.setSuccessUrl("/index");// 登录成功后的首页
         return shiroFilter;
+    }
+
+    /**
+     * 管理shiro声明周期
+     */
+    @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
+
+    /**
+     * 解决@RequiresRoles不生效
+     */
+    @Bean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator(){
+        DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
+        creator.setProxyTargetClass(true);
+        return creator;
+    }
+
+    /**
+     * 解决@RequiresRoles不生效
+     */
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultSecurityManager securityManager){
+        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+        advisor.setSecurityManager(securityManager);
+        return advisor;
     }
 }

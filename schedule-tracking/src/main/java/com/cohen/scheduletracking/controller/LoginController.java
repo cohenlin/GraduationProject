@@ -4,6 +4,7 @@ import com.cohen.scheduletracking.entity.Employee;
 import com.cohen.scheduletracking.entity.MessageBody;
 import com.cohen.scheduletracking.service.EmailService;
 import com.cohen.scheduletracking.service.LoginService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,6 +60,11 @@ public class LoginController {
     @RequestMapping("403")
     public String unauthorized() {
         return "403";
+    }
+
+    @RequestMapping("500")
+    public String error() {
+        return "500";
     }
 
     @RequestMapping(value = "checkJurisdiction", method = RequestMethod.GET)

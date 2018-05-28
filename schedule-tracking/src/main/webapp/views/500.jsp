@@ -4,12 +4,12 @@
          pageEncoding="UTF-8" %>
 <html>
 <head>
-    <title>403</title>
+    <title>500</title>
 </head>
 <body>
 <section id="main-content">
     <section class="wrapper">
-        <p style="text-align: center"><h3>没有访问权限</h3></p>
+        <p style="text-align: center"><h3>服务器内部错误</h3></p>
     </section>
 </section>
 </body>

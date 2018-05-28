@@ -5,11 +5,14 @@ import com.cohen.scheduletracking.service.LoginService;
 import com.cohen.scheduletracking.utils.MD5Util;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author 林金成
@@ -40,18 +43,19 @@ public class MyRealm extends AuthorizingRealm {
     }
 
     /**
-     * 权限
+     * 授权
      *
      * @param principalCollection
      * @return
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        Iterator i = principalCollection.iterator();
-        while (i.hasNext()) {
-            Object next = i.next();
-            System.out.println(next);
-        }
-        return null;
+        Object primaryPrincipal = principalCollection.getPrimaryPrincipal();
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        Employee user = (Employee)this.getAvailablePrincipal(principalCollection);// 获取登录用户
+        Set<String> set = new HashSet<>();
+        set.add(String.valueOf(user.getLevel()));// "1", "2", "3"
+        info.setRoles(set);
+        return info;
     }
 }
