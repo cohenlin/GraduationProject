@@ -22,11 +22,11 @@
     <repositories>
         <repository>
             <id>releases</id>
-            <url>http://47.94.148.40:8081/nexus/content/repositories/releases/</url>
+            <url>http://47.94.156.49:8081/nexus/content/repositories/releases/</url>
         </repository>
         <repository>
             <id>snapshots</id>
-            <url>http://47.94.148.40:8081/nexus/content/repositories/snapshots/</url>
+            <url>http://47.94.156.49:8081/nexus/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
