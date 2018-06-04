@@ -6,6 +6,7 @@ import com.cohen.scheduletracking.entity.Project;
 import com.cohen.scheduletracking.service.ProjectService;
 import com.cohen.scheduletracking.utils.StringUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,9 +25,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @ResponseBody
@@ -62,8 +63,11 @@ public class ProjectController {
     @ResponseBody
     @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
     public MessageBody fileUpload(HttpServletRequest request,
-                             @RequestParam(value = "file", required = false) MultipartFile file,int flg,int id) {
+                                  @RequestParam(value = "file", required = false) MultipartFile file, int flg, int id) {
         MessageBody msg = new MessageBody();
+
+        System.out.println(request);
+
 //        String path = request.getSession().getServletContext().getRealPath("WEB-INF/upload");
         String path = applicationProperty.getFilePath();
         path = path.concat(File.separator).concat(String.valueOf(flg)).concat(File.separator).concat(String.valueOf(id));
@@ -97,7 +101,7 @@ public class ProjectController {
             e.printStackTrace();
         }
         // 上传文件成功, 保存当前文件与对应项目、任务的关联关系
-        projectService.saveFile(file.getOriginalFilename(),path, id, flg);
+        projectService.saveFile(file.getOriginalFilename(), path, id, flg);
         msg.setStatus("1");
         msg.setBody("上传文件成功！");
         Map<String, String> map = new HashMap<>();
@@ -107,15 +111,30 @@ public class ProjectController {
         return msg;
     }
 
+    public void getFileContentFromShiroRequest(HttpServletRequest request) {
+        System.out.println(request);
+        ShiroHttpServletRequest shiroRequest = (ShiroHttpServletRequest) request;
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+        MultipartHttpServletRequest multipartRequest = commonsMultipartResolver.resolveMultipart((HttpServletRequest) shiroRequest.getRequest());
+
+        Iterator<String> itr = multipartRequest.getFileNames();
+        MultipartFile file = null;
+
+        while (itr.hasNext()) {
+            file = multipartRequest.getFile(itr.next());
+        }
+        System.out.println();
+    }
+
     @ResponseBody
-    @RequestMapping(value="listFiles", method = RequestMethod.GET)
-    public MessageBody listFiles(@RequestParam("pid") int pid, MessageBody msg){
+    @RequestMapping(value = "listFiles", method = RequestMethod.GET)
+    public MessageBody listFiles(@RequestParam("pid") int pid, MessageBody msg) {
         return projectService.listFiles(msg, pid);
     }
 
     @ResponseBody
     @RequestMapping("download")
-    public ResponseEntity<byte[]> download(@RequestParam("fileName") String fileName,@RequestParam("filePath") String filePath) throws IOException {
+    public ResponseEntity<byte[]> download(@RequestParam("fileName") String fileName, @RequestParam("filePath") String filePath) throws IOException {
         File file = new File(filePath, fileName);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attchement;filename=" + URLEncoder.encode(fileName, "UTF-8"));
@@ -125,7 +144,7 @@ public class ProjectController {
 
     @ResponseBody
     @RequestMapping("deleteFile")
-    public MessageBody deleteFile(@RequestParam("fileName") String fileName,@RequestParam("filePath") String filePath, @RequestParam("pid") Integer pid, MessageBody msg) throws IOException {
+    public MessageBody deleteFile(@RequestParam("fileName") String fileName, @RequestParam("filePath") String filePath, @RequestParam("pid") Integer pid, MessageBody msg) throws IOException {
         return projectService.deleteFiles(msg, fileName, filePath, pid);
     }
 
