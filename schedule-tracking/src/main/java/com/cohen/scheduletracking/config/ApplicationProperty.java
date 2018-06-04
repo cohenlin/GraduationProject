@@ -21,6 +21,9 @@ public class ApplicationProperty {
     @Value("${mail.send-by}")
     private String sendBy = "Cohen";
 
+    @Value("${path.file-upload}")
+    private String filePath = "/opt/upload";
+
     public boolean getRedisCacheEnable() {
         return redisCacheEnable;
     }
@@ -51,5 +54,13 @@ public class ApplicationProperty {
 
     public void setSendBy(String sendBy) {
         this.sendBy = sendBy;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

@@ -16,3 +16,5 @@ redis-cache-enable: false
 redis:
   cache:
     enable: true
+path:
+  file-upload: /opt/upload

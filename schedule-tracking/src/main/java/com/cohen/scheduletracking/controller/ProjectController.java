@@ -1,5 +1,6 @@
 package com.cohen.scheduletracking.controller;
 
+import com.cohen.scheduletracking.config.ApplicationProperty;
 import com.cohen.scheduletracking.entity.MessageBody;
 import com.cohen.scheduletracking.entity.Project;
 import com.cohen.scheduletracking.service.ProjectService;
@@ -33,6 +34,9 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private ApplicationProperty applicationProperty;
+
     @PostMapping(value = "addProject")
     public Map<String, String> addProjectInfo(@Valid Project project, BindingResult result, HttpSession session) {
         Map<String, String> msg = new HashMap<>();
@@ -58,9 +62,10 @@ public class ProjectController {
     @ResponseBody
     @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
     public MessageBody fileUpload(HttpServletRequest request,
-                             @RequestParam(value = "file", required = false) MultipartFile file,int flg,int id, HttpSession session) {
+                             @RequestParam(value = "file", required = false) MultipartFile file,int flg,int id) {
         MessageBody msg = new MessageBody();
-        String path = request.getSession().getServletContext().getRealPath("WEB-INF/upload");
+//        String path = request.getSession().getServletContext().getRealPath("WEB-INF/upload");
+        String path = applicationProperty.getFilePath();
         path = path.concat(File.separator).concat(String.valueOf(flg)).concat(File.separator).concat(String.valueOf(id));
         if (file == null) {
             msg.setStatus("0");

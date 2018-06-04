@@ -58,7 +58,7 @@ TOP BAR CONTENT & NOTIFICATIONS
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="菜单"></div>
     </div>
     <!--logo start-->
-    <a href="index" class="logo"><b>任务跟踪系统</b></a>
+    <a href="index" class="logo"><b>任务管理系统</b></a>
     <!--logo end-->
 
     <div class="top-menu">
