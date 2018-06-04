@@ -54,13 +54,13 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/changePassword", "anon");
         filterChainDefinitionMap.put("/findPassword", "anon");
         filterChainDefinitionMap.put("/emp/changePassword", "anon");
-        filterChainDefinitionMap.put("/project/fileupload", "anon");
         // 登出
         filterChainDefinitionMap.put("/logout", "logout");
         shiroFilter.setLoginUrl("/login");
         shiroFilter.setUnauthorizedUrl("/403");
         // 所有请求必须有权限才能访问
         filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/project/fileupload", "anon");
         shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
         shiroFilter.setSuccessUrl("/index");// 登录成功后的首页
         return shiroFilter;
