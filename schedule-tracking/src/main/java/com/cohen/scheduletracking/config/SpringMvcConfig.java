@@ -28,7 +28,6 @@ public class SpringMvcConfig implements WebMvcConfigurer {
      * 文件上传处理器
      */
     @Bean
-    @ConditionalOnMissingBean({ShiroFilterFactoryBean.class})
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setDefaultEncoding("UTF-8");
