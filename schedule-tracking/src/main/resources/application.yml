@@ -15,4 +15,4 @@ mybatis:
 redis-cache-enable: false
 redis:
   cache:
-    enable: false
+    enable: true
