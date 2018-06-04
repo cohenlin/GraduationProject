@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 /**
  * @author 林金成
@@ -22,6 +23,7 @@ public class MyApplication {
 
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext run = SpringApplication.run(MyApplication.class, args);
-        HiddenHttpMethodFilter bean = run.getBean(HiddenHttpMethodFilter.class);
+        CommonsMultipartResolver bean = run.getBean(CommonsMultipartResolver.class);
+        System.out.println("------------------------------------------------------------------------------->  CommonsMultipartResolver:  "+bean);
     }
 }
