@@ -40,7 +40,6 @@
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/assets/js/gritter/js/jquery.gritter.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/gritter-conf.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/add_project.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tasks.js" type="text/javascript"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

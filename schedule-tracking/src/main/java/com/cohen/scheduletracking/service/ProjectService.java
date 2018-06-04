@@ -19,7 +19,16 @@ public interface ProjectService {
      *
      * @return 影响行数
      */
-    Integer save(Project project);
+    Integer save(Project project, HttpSession session);
+
+    /**
+     * 保存文件与项目、任务的关联关系
+     */
+    Integer saveFile(String fileName,String filePath, Integer id, Integer flg);
+
+    MessageBody listFiles(MessageBody msg, Integer pid);
+
+    MessageBody deleteFiles(MessageBody msg, String fileName, String filePath, Integer pid);
 
     MessageBody list(MessageBody msg, HttpSession session);
 
@@ -79,4 +88,5 @@ public interface ProjectService {
      * 查询需要被当前用户审核的项目
      */
     MessageBody listExamine(MessageBody msg, HttpSession session);
+    int delete(String fileName);
 }

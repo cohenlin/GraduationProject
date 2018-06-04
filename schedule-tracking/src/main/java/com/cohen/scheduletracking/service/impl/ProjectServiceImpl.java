@@ -35,18 +35,82 @@ public class ProjectServiceImpl implements ProjectService {
      * 保存当前项目信息，并把此项目绑定到负责人
      */
     @Override
-    public Integer save(Project project) {
+    public Integer save(Project project, HttpSession session) {
+        SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+        Employee user = (Employee) attribute.getPrimaryPrincipal();
         // 给Project填充其余属性
         project.setSchedule("0%");// 项目进度
         project.setStatus("0");// 是否完成
         project.setDeleted("0");// 是否已删除
-        project.setCreateUser(0);// 创建人
+        project.setCreateUser(user.getId());// 创建人
         project.setCreateTime(new Date());// 创建日期
         // 执行插入
         int returnValue = projectMapper.insert(project);
         commonMapper.insertEmpProject(project.getManagerId(), project.getId(), "1");
 
         return returnValue;
+    }
+
+    @Override
+    public Integer saveFile(String fileName,String filePath, Integer id, Integer flg) {
+        Map<String, Object> map = new HashMap<>();
+        switch (flg) {
+            case 1:// 项目文件
+                map.put("pid", id);
+                map.put("tid", 0);
+                break;
+            case 2:// 任务文件
+                map.put("pid", 0);
+                map.put("tid", id);
+                break;
+            default:
+                map.put("pid", id);
+                map.put("tid", 0);
+        }
+        map.put("fileName", fileName);
+        map.put("filePath", filePath);
+
+        return commonMapper.saveFile(map);
+    }
+
+    @Override
+    public MessageBody listFiles(MessageBody msg, Integer pid) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("pid", pid);
+        List<File> files = commonMapper.listFiles(map);
+        if(files == null){
+            files = new ArrayList<>();
+        }
+        msg.setStatus("1");
+        msg.setBody("查询成功！");
+        msg.setData(files);
+        return msg;
+    }
+
+    @Override
+    public MessageBody deleteFiles(MessageBody msg, String fileName, String filePath, Integer pid) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("pid", pid);
+        map.put("fileName", fileName);
+        map.put("filePath", filePath);
+        commonMapper.deleteFiles(map);
+        delete(new java.io.File(filePath, fileName));
+        msg.setStatus("1");
+        msg.setBody("删除成功！");
+        return msg;
+    }
+
+    /**
+     * 递归删除文件
+     */
+    private void delete(java.io.File file) {
+        if(file.isFile()){
+            file.delete();
+        }else{
+            for (java.io.File f : file.listFiles()) {
+                delete(f);
+            }
+        }
     }
 
     /**
@@ -79,7 +143,6 @@ public class ProjectServiceImpl implements ProjectService {
                 List<EmpProject> eps = commonMapper.queryByProId(p.getId());
                 p.setPeopleNum(eps.size());
             }
-
         }
         if (list != null) {
             msg.setStatus("1");// 检索成功！
@@ -306,6 +369,14 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
+    /**
+     * 根据文件名删除
+     */
+    @Override
+    public int delete(String fileName) {
+        return projectMapper.deleteByFileName(fileName);
+    }
+
     @Override
     public MessageBody listExamine(MessageBody msg, HttpSession session) {
         SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
@@ -323,7 +394,6 @@ public class ProjectServiceImpl implements ProjectService {
                 List<EmpProject> eps = commonMapper.queryByProId(p.getId());
                 p.setPeopleNum(eps.size());
             }
-
         }
         msg.setStatus("1");
         msg.setData(projects);

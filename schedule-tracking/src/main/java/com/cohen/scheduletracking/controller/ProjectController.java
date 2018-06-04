@@ -4,13 +4,11 @@ import com.cohen.scheduletracking.entity.MessageBody;
 import com.cohen.scheduletracking.entity.Project;
 import com.cohen.scheduletracking.service.ProjectService;
 import com.cohen.scheduletracking.utils.StringUtils;
-import org.apache.shiro.ShiroException;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -22,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @PostMapping(value = "/addProject")
+    @PostMapping(value = "addProject")
     public Map<String, String> addProjectInfo(@Valid Project project, BindingResult result, HttpSession session) {
         Map<String, String> msg = new HashMap<>();
         String timeStamp = StringUtils.getDateWithCommonString();
@@ -45,50 +44,84 @@ public class ProjectController {
             }
             msg.put("status", "0");
         } else {
-            project.setSchemeFile(timeStamp + "_" + project.getSchemeFile());
-            projectService.save(project);
+//            project.setSchemeFile(timeStamp + "_" + project.getSchemeFile());
+            projectService.save(project, session);
             msg.put("status", "1");
         }
-        session.setAttribute("timeStamp", timeStamp);
 
         return msg;
     }
 
     /**
-     * 上传项目策划案，返回json结果
+     * 上传项目文档
      */
+    @ResponseBody
     @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
-    public String fileUpload(HttpServletRequest request,
-                             @RequestParam(value = "file", required = false) MultipartFile file, HttpSession session) {
-        String msg = null;
+    public MessageBody fileUpload(HttpServletRequest request,
+                             @RequestParam(value = "file", required = false) MultipartFile file,int flg,int id, HttpSession session) {
+        MessageBody msg = new MessageBody();
         String path = request.getSession().getServletContext().getRealPath("WEB-INF/upload");
+        path = path.concat(File.separator).concat(String.valueOf(flg)).concat(File.separator).concat(String.valueOf(id));
         if (file == null) {
-            return "error";
+            msg.setStatus("0");
+            msg.setBody("上传文件失败！");
         }
 
-        String fileName = session.getAttribute("timeStamp") + "_" + file.getOriginalFilename();
+        String fileName = file.getOriginalFilename();
         if (fileName == "" || fileName.equals("") || fileName == null || fileName.equals(null)) {
-            return "error";
+            msg.setStatus("0");
+            msg.setBody("上传文件失败！");
         }
+        File upload = new File(path);
         File target = new File(path, fileName);
         // 判断该文件是否已存在
-        if (!target.exists()) {
+        if (!upload.exists()) {
             // 该文件不存在，创建
-            target.mkdirs();
+            upload.mkdirs();
         }
 
         try {
             file.transferTo(target);
-            msg = "success";
         } catch (IllegalStateException e) {
-            msg = "error";
+            msg.setStatus("0");
+            msg.setBody("上传文件失败！");
             e.printStackTrace();
         } catch (IOException e) {
-            msg = "error";
+            msg.setStatus("0");
+            msg.setBody("上传文件失败！");
             e.printStackTrace();
         }
-
+        // 上传文件成功, 保存当前文件与对应项目、任务的关联关系
+        projectService.saveFile(file.getOriginalFilename(),path, id, flg);
+        msg.setStatus("1");
+        msg.setBody("上传文件成功！");
+        Map<String, String> map = new HashMap<>();
+        map.put("fileName", fileName);
+        map.put("filePath", path);
+        msg.setData(map);
         return msg;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="listFiles", method = RequestMethod.GET)
+    public MessageBody listFiles(@RequestParam("pid") int pid, MessageBody msg){
+        return projectService.listFiles(msg, pid);
+    }
+
+    @ResponseBody
+    @RequestMapping("download")
+    public ResponseEntity<byte[]> download(@RequestParam("fileName") String fileName,@RequestParam("filePath") String filePath) throws IOException {
+        File file = new File(filePath, fileName);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attchement;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
+                headers, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @RequestMapping("deleteFile")
+    public MessageBody deleteFile(@RequestParam("fileName") String fileName,@RequestParam("filePath") String filePath, @RequestParam("pid") Integer pid, MessageBody msg) throws IOException {
+        return projectService.deleteFiles(msg, fileName, filePath, pid);
     }
 
     /**
@@ -110,10 +143,6 @@ public class ProjectController {
 
     /**
      * 项目编辑回显
-     *
-     * @param id
-     * @param msg
-     * @return
      */
     @RequestMapping(value = "getProjectById", method = RequestMethod.GET)
     public MessageBody getProjectById(@RequestParam("id") int id, MessageBody msg) {

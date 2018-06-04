@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 /**
  * @author 林金成
@@ -21,5 +22,6 @@ public class MyApplication {
 
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext run = SpringApplication.run(MyApplication.class, args);
+        HiddenHttpMethodFilter bean = run.getBean(HiddenHttpMethodFilter.class);
     }
 }

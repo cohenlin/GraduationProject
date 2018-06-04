@@ -4,6 +4,7 @@
 <%@ include file="menu.jsp" %>
 <html>
 <body>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/add_project.js"></script>
 <script type="text/javascript">
     $(function () {
         $.get("/dept/getAll", {"time": new Date()}, function (data) {
@@ -81,19 +82,18 @@
                                 </div>
                                 <div id="budgetMsg" class="control-label"></div>
                             </div>
-                            <form id="uploadForm" action="/project/fileUpload" method="post"
-                                  enctype="multipart/form-data">
-                                <div class="form-group col-sm-6">
-                                    <label class="col-sm-3 control-label">上传项目策划案</label>
-                                    <div class="col-sm-6">
-                                        <input id="file" type="file" class="form-control" name="file"
-                                               onchange="onblurCheckIfNull(this, 'schemeFileMsg')"/>
-                                    </div>
-                                    <div class="col-sm-2">
-                                    </div>
-                                    <div id="schemeFileMsg" class="control-label"></div>
-                                </div>
-                            </form>
+                            <!--<form id="uploadForm" action="/project/fileUpload" method="POST" enctype="multipart/form-data">-->
+                                <!--<div class="form-group col-sm-6">-->
+                                    <!--<label class="col-sm-3 control-label">上传项目策划案</label>-->
+                                    <!--<div class="col-sm-6">-->
+                                        <!--<input id="file" type="file" class="form-control" name="file"-->
+                                               <!--onchange="onblurCheckIfNull(this, 'schemeFileMsg')"/>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-sm-2">-->
+                                    <!--</div>-->
+                                    <!--<div id="schemeFileMsg" class="control-label"></div>-->
+                                <!--</div>-->
+                            <!--</form>-->
                             <div class="form-group col-sm-12">
                                 <label class="col-sm-1 control-label">项目简介</label>
                                 <div class="col-sm-7">

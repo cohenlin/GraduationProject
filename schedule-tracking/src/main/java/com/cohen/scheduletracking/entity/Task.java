@@ -4,107 +4,107 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Task implements Serializable {
-    private int id;// 主键
+    private Integer id;// 主键
     private String taskInfo;// 任务信息.
     private Date beginTime;// 开始时间.
     private Date estimatedTime;// 预计完成时间.
     private Date endTime;// 完成时间
-    private int empId;// 员工id
-    private int managerId;// 领导
-    private int projectId;// 所属项目
-    private double schedule;// 进度
+    private Integer empId;// 员工id
+    private Integer managerId;// 领导
+    private Integer projectId;// 所属项目
+    private Double schedule;// 进度
     private String delete;// 是否删除
-    private int createUser;// 创建人
+    private Integer createUser;// 创建人
     private Date createTime;// 创建时间
-    private int updateUser;// 修改人
+    private Integer updateUser;// 修改人
     private Date updateTime;// 修改时间
     private String status;// 状态：0为未完成状态;1为完成状态;2为正在审核状态
 
-    public void setTaskInfo(String taskInfo) {
-        this.taskInfo = taskInfo;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public void setEstimatedTime(Date estimatedTime) {
-        this.estimatedTime = estimatedTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setManagerId(int managerId) {
-        this.managerId = managerId;
-    }
-
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
-
-    public void setSchedule(double schedule) {
-        this.schedule = schedule;
-    }
-
-    public void setDelete(String delete) {
-        this.delete = delete;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTaskInfo() {
         return taskInfo;
     }
 
+    public void setTaskInfo(String taskInfo) {
+        this.taskInfo = taskInfo;
+    }
+
     public Date getBeginTime() {
         return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
     }
 
     public Date getEstimatedTime() {
         return estimatedTime;
     }
 
+    public void setEstimatedTime(Date estimatedTime) {
+        this.estimatedTime = estimatedTime;
+    }
+
     public Date getEndTime() {
         return endTime;
     }
 
-    public int getManagerId() {
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
+    }
+
+    public Integer getManagerId() {
         return managerId;
     }
 
-    public int getProjectId() {
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
+    }
+
+    public Integer getProjectId() {
         return projectId;
     }
 
-    public double getSchedule() {
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
+
+    public Double getSchedule() {
         return schedule;
+    }
+
+    public void setSchedule(Double schedule) {
+        this.schedule = schedule;
     }
 
     public String getDelete() {
         return delete;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDelete(String delete) {
+        this.delete = delete;
     }
 
-    public int getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(int empId) {
-        this.empId = empId;
-    }
-
-    public int getCreateUser() {
+    public Integer getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(int createUser) {
+    public void setCreateUser(Integer createUser) {
         this.createUser = createUser;
     }
 
@@ -116,11 +116,11 @@ public class Task implements Serializable {
         this.createTime = createTime;
     }
 
-    public int getUpdateUser() {
+    public Integer getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(int updateUser) {
+    public void setUpdateUser(Integer updateUser) {
         this.updateUser = updateUser;
     }
 

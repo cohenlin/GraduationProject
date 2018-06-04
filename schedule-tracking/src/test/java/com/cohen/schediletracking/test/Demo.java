@@ -1,5 +1,7 @@
 package com.cohen.schediletracking.test;
 
+import com.cohen.scheduletracking.utils.MD5Util;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -39,8 +41,9 @@ public class Demo {
 //        int[] a = {18, 17, 21, 25, 23, 24, 14, 30, 29, 31, 28, 37, 27, 34, 44, 41, 39, 36, 32, 48, 43, 38, 26, 52, 40, 33, 46, 47, 50, 57, 35, 55, 51, 53, 42, 58, 45, 54, 49, 59, 65};
 //        shellSort(a);
 //        System.out.print(Arrays.toString(a));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String todayStr = sdf.format(new Date());
-        System.out.println(todayStr);
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        String todayStr = sdf.format(new Date());
+//        System.out.println(todayStr);
+        System.out.println(MD5Util.MD5("Test123"));
     }
 }

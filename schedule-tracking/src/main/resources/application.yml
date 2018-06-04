@@ -12,3 +12,7 @@ mail:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+redis-cache-enable: false
+redis:
+  cache:
+    enable: false

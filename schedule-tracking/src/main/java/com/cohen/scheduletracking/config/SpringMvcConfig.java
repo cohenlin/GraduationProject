@@ -4,9 +4,12 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.cohen.scheduletracking.common.NoLoginInterceptor;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -21,40 +24,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration // 此类为配置类
 public class SpringMvcConfig implements WebMvcConfigurer {
 
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/").setViewName("forward:/login.jsp");
-//        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-//    }
-
     /**
      * 文件上传处理器
      */
     @Bean
+    @ConditionalOnMissingBean({ShiroFilterFactoryBean.class})
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setDefaultEncoding("UTF-8");
         return multipartResolver;
     }
-
-    /**
-     * 视图解析器
-     */
-//    @Bean
-//    public InternalResourceViewResolver viewResolver() {
-//        InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
-//        internalResourceViewResolver.setPrefix("/views/");
-//        internalResourceViewResolver.setSuffix(".jsp");
-//        return internalResourceViewResolver;
-//    }
-
-    /**
-     * 处理静态资源
-     */
-//    @Override
-//    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-//        configurer.enable();
-//    }
 
     /**
      * 注册拦截器

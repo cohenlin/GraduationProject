@@ -1,6 +1,7 @@
 package com.cohen.scheduletracking.dao;
 
 import com.cohen.redis.annotation.RedisCached;
+import com.cohen.redis.annotation.RedisCleared;
 import com.cohen.scheduletracking.entity.Employee;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ public interface EmployeeMapper {
     /**
      * 根据部门查员工
      */
+    @RedisCached
     List<Employee> getEmployeeByDeptId(@Param("deptId") int deptId);
 
     /**
@@ -34,10 +36,12 @@ public interface EmployeeMapper {
      * @param ids
      * @return
      */
+    @RedisCached
     List<Employee> queryById(@Param("ids") List<Integer> ids);
 
     /**
      * 根据条件修改，动态拼接sql语句
      */
+    @RedisCleared
     int changePassword(Map<String, String> map);
 }

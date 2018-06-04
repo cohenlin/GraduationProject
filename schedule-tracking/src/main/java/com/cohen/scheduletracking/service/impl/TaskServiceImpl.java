@@ -24,17 +24,22 @@ public class TaskServiceImpl implements TaskService {
     public MessageBody insert(Task task, MessageBody msg, HttpSession session) {
         SimplePrincipalCollection attribute = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
         Employee user = (Employee) attribute.getPrimaryPrincipal();
-        task.setEmpId(user.getId());// 用户自己新增任务,managerId和empId都是自己
-        task.setManagerId(user.getId());
+        if(!(task.getManagerId() != null && task.getManagerId() > 0)){
+            task.setManagerId(user.getId());
+            task.setProjectId(0);
+        }
+        if(!(task.getEmpId() != null && task.getEmpId() > 0)){
+            task.setEmpId(user.getId());
+        }
         task.setCreateTime(new Date());
-        task.setProjectId(0);
-        task.setSchedule(0);
+        task.setSchedule(0.0);
         task.setCreateUser(user.getId());
 //        task.setBeginTime(new Date());// 可以根据前端表单选择，也可以默认设置为当前时间
         task.setStatus("0");
         task.setDelete("0");
         if (taskMapper.insert(task) == 1) {
             msg.setStatus("1");
+            msg.setData(task.getId());
         } else {
             msg.setStatus("0");
         }

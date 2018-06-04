@@ -5,6 +5,8 @@
 <head>
     <title>编辑项目</title>
 </head>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/edit_project.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/add_project.js"></script>
 <body>
 <section id="container">
     <section id="main-content">
@@ -73,19 +75,26 @@
                                 </div>
                                 <div id="budgetMsg" class="control-label"></div>
                             </div>
-                            <form id="uploadForm" action="project/fileUpload" method="post"
-                                  enctype="multipart/form-data">
-                                <div class="form-group col-sm-6">
-                                    <label class="col-sm-3 control-label">上传项目策划案</label>
-                                    <div class="col-sm-6">
-                                        <input id="file" type="file" class="form-control" name="file"
-                                               onchange="onblurCheckIfNull(this, 'schemeFileMsg')"/>
-                                    </div>
-                                    <div class="col-sm-2">
-                                    </div>
-                                    <div id="schemeFileMsg" class="control-label"></div>
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-3 control-label">项目资料</label>
+                                <div class="col-sm-6">
+                                    <a onclick="showFileList()" class="btn btn-success btn-sm"
+                                       href="javascript:void(0)">文件列表</a>
                                 </div>
-                            </form>
+                                <!--<div class="col-sm-2">-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="form-group col-sm-6">-->
+                                <!--<label class="col-sm-3 control-label">上传文件</label>-->
+                                <!--<div class="col-sm-6">-->
+                                <!--<input id="fileUpload" type="file" class="form-control" name="file" />-->
+                                <!--<input id="upload" type="button" value="上传" />-->
+                                <!--<br />-->
+                                <!--<progress id="progressBar" value="0" max="100"/>-->
+                                <!--<span id="percentage"></span>-->
+                                <!--</div>-->
+                                <!--<div class="col-sm-2"></div>-->
+                            </div>
                             <div class="form-group col-sm-12">
                                 <label class="col-sm-1 control-label">项目简介</label>
                                 <div class="col-sm-7">
@@ -122,7 +131,8 @@
                             </div>
                             <div class="pull-right add-task-row" style="margin-right: 12px; margin-bottom: 5px;">
                                 <div>
-                                    <a onclick="showForm()" class="btn btn-success btn-sm pull-left" href="javascript:void(0)">新建任务</a>
+                                    <a onclick="showForm()" class="btn btn-success btn-sm pull-left"
+                                       href="javascript:void(0)">新建任务</a>
                                 </div>
                             </div>
                             <br>
@@ -181,13 +191,15 @@
                             <div class="form-group col-sm-12">
                                 <div class="col-sm-12 col-sm-offset-4">
                                     <div class="col-sm-1">
-                                        <button id="btn-submit" type="submit" class="btn btn-success btn-sm">提交</button>
+                                        <button id="btn-task-submit" type="submit" class="btn btn-success btn-sm">提交
+                                        </button>
                                     </div>
                                     <div class="col-sm-1">
-                                        <button id="btn-reset" type="button" class="btn btn-warning btn-sm">重置</button>
+                                        <button id="btn-task-reset" type="button" class="btn btn-warning btn-sm">重置
+                                        </button>
                                     </div>
                                     <div class="col-sm-1">
-                                        <button id="btn-cancel" type="button" class="btn btn-sm">取消</button>
+                                        <button id="btn-task-cancel" type="button" class="btn btn-sm">取消</button>
                                     </div>
                                 </div>
                             </div>
@@ -196,171 +208,33 @@
                 </div>
                 <!-- /col-md-12-->
             </div>
+            <div id="file-list" class="row" hidden>
+                <div class="col-md-12">
+                    <!-- 文件上传 -->
+                    <label class="col-sm-3">上传文件</label>
+                    <div class="col-sm-11 col-md-offset-1">
+                        <div class="col-sm-9">
+                            <form id="file-form" enctype="multipart/form-data">
+                                <input id="fileUpload" type="file" class="form-control" name="file"/>
+                            </form>
+                        </div>
+                        <input id="upload" type="button" class="col-sm-3 btn btn-warning btn-sm" value="上传"
+                               onclick="return uploadFile()"/>
+                    </div>
+                    <!-- 文件列表 -->
+                    <br/>
+                    <label class="col-sm-3">文件列表</label>
+                    <div id="file" class="col-sm-10 col-md-offset-2">
+
+                    </div>
+                </div>
+            </div>
         </section>
-        <!--/wrapper -->
     </section>
 </section>
 <jsp:include page="footer.jsp"/>
 </body>
 </html>
 <script>
-    $(function () {
 
-        // alert("pid" + window.location.href.split('=')[1].split('&')[0])
-        // alert("status"+window.location.href.split('&')[1].split('=')[1]);
-        $.ajax({
-            url: '/project/getProjectById',
-            type: 'get',
-            data: {
-                "id": window.location.href.split('=')[1].split('&')[0],
-                "time": new Date()
-            },
-            success: function (data) {
-                if (data.status == '1') {// 数据获取成功！
-                    var project = data.data.project;
-                    var tasks = data.data.tasks;
-                    for (var i = 0; i < tasks.length; i++) {
-                        appendTaskToList(tasks[i]);
-                    }
-                    appendProjectToList(project);
-                } else {// 数据不存在
-                    alert(data.body);
-                }
-            },
-            error: function (data) {
-                alert("系统错误！请稍后重试！");
-            }
-        });
-
-        // 新增任务取消按钮
-        $("#btn-cancel").click(function () {
-            $('#add-form').dialog("close");
-        });
-        $("#btn-reset").click(function () {
-
-        });
-        // 新增任务提交按钮
-        $("#btn-submit").click(function () {
-            $('#add-form').dialog("close");
-        });
-    })
-
-    // 把任务信息显示到对应区域
-    function appendTaskToList(data) {
-        var status;
-        if (data.status == '1') {
-            status = "<span class='badge bg-success'>已完成</span>"; // bg-info, bg-important, bg-warning, bg-success
-        } else if (data.status == '2') {
-            status = "<span class='badge bg-theme'>审核中</span>"; // bg-info, bg-important, bg-warning, bg-success
-        } else {
-            status = "<span class='badge bg-info '>未完成</span>";
-        }
-        var node = "<li>" +
-            "<div class='task-title'>" +
-            "<input type='checkbox' class='list-child' value='' style='margin-right:10px;'/>" +
-            "<span class='task-title-sp'>" + data.taskInfo + "</span> " +
-            status +
-            "<div class='pull-right hidden-phone' style='float:right'>" +
-            "<button onclick='return finishTask(" + data.id + ")' class='btn btn-success btn-xs'>" +
-            "<i class=' fa fa-check'></i>" +
-            "</button>" +
-            "<button onclick='return editTask(" + data.id + ")' class='btn btn-primary btn-xs'>" +
-            "<i class='fa fa-pencil'></i>" +
-            "</button>" +
-            "<button onclick='return removeTask(" + data.id + ")' class='btn btn-danger btn-xs'>" +
-            "<i class='fa fa-trash-o '></i>" +
-            "</button>" +
-            "</div>" +
-            "</div>" +
-            "</li>";
-
-        if (data.status == '0') {
-            $("#unfinished-task-list").append(node);
-        } else if (data.status == '1') {
-            $("#finished-task-list").append(node);
-        } else {
-            $("#shenhe-task-list").append(node);
-        }
-
-        return node;
-    }
-
-    // 把项目信息显示到对应的区域
-    function appendProjectToList(project) {
-        $("#pid").val(project.id);
-        $("#projectName").val(project.projectName);// 项目名
-        // 获取部门信息拼到下拉框
-        $.get("/dept/getAll", {"time": new Date()}, function (data) {
-            for (var i = 0; i < data.length; i++) {
-                var optionNode;
-                if (data[i].id == project.deptId) {
-                    optionNode = "<option value='" + data[i].id + "' selected>" + data[i].deptName + "</option>";
-                } else {
-                    optionNode = "<option value='" + data[i].id + "'>" + data[i].deptName + "</option>";
-                }
-                $("#deptId").append(optionNode);
-            }
-        });
-        if(window.location.href.split('=')[2] == '1'){
-            $("#deptId").prop("disabled", "disabled");
-        }
-
-        // 获取部门员工信息拼到下拉框
-        $.get("/emp/getByDeptId", {"deptId": project.deptId, "time": new Date()}, function (data) {
-            var optionNode = "<option value=''>请选择</option>";
-            $("#managerId").empty();
-            $("#empId").empty();
-            $("#managerId").append(optionNode);
-            $("#empId").append(optionNode);
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].id == project.managerId) {
-                    optionNode = "<option value='" + data[i].id + "' selected>" + data[i].name + "</option>";
-                } else {
-                    optionNode = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                }
-                $("#managerId").append(optionNode);
-                $("#empId").append(optionNode);
-            }
-        });
-
-        $("#beginTime").val(toDateString(new Date(project.beginTime)));
-        $("#expectEndTime").val(toDateString(new Date(project.expectEndTime)));
-        $("#budget").val(project.budget);
-        $("#projectDescribe").val(project.projectDescribe);
-        $("#file").val(project.schemeFile);
-    }
-
-    function toDateString(d) {
-        var year = d.getFullYear();
-        var month = buLing(d.getMonth() + 1);
-        var date = buLing(d.getDate());
-        var hours = buLing(d.getHours())
-        var minutes = buLing(d.getMinutes());
-        var seconds = buLing(d.getSeconds());
-        return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
-    }
-
-    function buLing(args) {
-        if (args < 10) {
-            args = "0" + args;
-        }
-        return args;
-    }
-
-    // 清除任务新增表单
-    function clearForm() {
-
-    }
-
-    function showForm() {
-        var pid = $("#pid").val();
-        $('#add-form').dialog({
-            title: '新增任务',
-            width: 800,
-            // height: 300,
-            closed: false,
-            cache: false,
-            modal: true,
-        });
-    }
 </script>

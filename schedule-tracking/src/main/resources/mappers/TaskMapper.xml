@@ -25,7 +25,7 @@
         <result column="update_user" property="updateUser"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
-    <insert id="insert" parameterType="com.cohen.scheduletracking.entity.Task">
+    <insert id="insert" parameterType="com.cohen.scheduletracking.entity.Task" useGeneratedKeys="true">
         INSERT INTO `task`(<include refid="column"/>) VALUES (#{task.id}, #{task.taskInfo}, #{task.beginTime},
         #{task.estimatedTime}, #{task.endTime},
         #{task.empId}, #{task.managerId}, #{task.projectId}, #{task.schedule}, #{task.status}, #{task.delete},

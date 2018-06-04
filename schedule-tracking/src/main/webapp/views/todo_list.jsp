@@ -258,7 +258,7 @@ pageEncoding="UTF-8" %>
                     if (data.status == "1") {
                         initTask();// 删除成功后重新加载任务列表！
                     } else {
-                        alert("删除失败！请重试！");
+                        alert(data.body);
                     }
                 },
                 error: function (data) {

@@ -30,7 +30,7 @@ $(function() {
         $("#expectEndTime").val("");
         $("#budget").val("");
         $("#projectDescribe").val("");
-        $("#file").val("");
+        // $("#file").val("");
     });
 
     // 点击按钮ajax提交项目信息，提交文件上传表单
@@ -45,8 +45,8 @@ $(function() {
         var expectEndTime = $("#expectEndTime").val();// 预计结束时间
         var budget = $("#budget").val();// 项目预算
         var projectDescribe = $("#projectDescribe").val();// 项目简介
-        var strs = $("#file").val().split("\\");
-        var schemeFile = strs[strs.length - 1];
+        // var strs = $("#file").val().split("\\");
+        // var schemeFile = strs[strs.length - 1];
 
         var args = {
             "projectName" : projectName,
@@ -56,12 +56,12 @@ $(function() {
             "expectEndTime" : expectEndTime,
             "budget" : budget,
             "projectDescribe" : projectDescribe,
-            "schemeFile" : schemeFile,
+            // "schemeFile" : schemeFile,
             "time" : new Date()
         };
         $.post("/project/addProject", args, function(data) {
             if (data.status == "1") {
-                $("#uploadForm").submit();
+                // $("#uploadForm").submit();
             } else {
                 for (var key in data) {
                     if(key != "status") {
@@ -118,13 +118,13 @@ function filedCheck() {
     if(!checkFiledsIfNull("项目简介", projectDescribe, $("#projectDescribeMsg"))){
         return false;
     }
-    var strs = $("#file").val().split("\\");
-    var schemeFile = strs[strs.length - 1];
-    if(schemeFile == "" || schemeFile == null){
-        var msgNode = "<font color='red'>请提交策划案！</font>";
-        $("#schemeFileMsg").empty().html(msgNode);
-        return false;
-    }
+    // var strs = $("#file").val().split("\\");
+    // var schemeFile = strs[strs.length - 1];
+    // if(schemeFile == "" || schemeFile == null){
+    //     var msgNode = "<font color='red'>请提交策划案！</font>";
+    //     $("#schemeFileMsg").empty().html(msgNode);
+    //     return false;
+    // }
 
     return true;
 }

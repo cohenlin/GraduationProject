@@ -8,8 +8,12 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
 
 import java.util.Map;
 
@@ -50,6 +54,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/changePassword", "anon");
         filterChainDefinitionMap.put("/findPassword", "anon");
         filterChainDefinitionMap.put("/emp/changePassword", "anon");
+        filterChainDefinitionMap.put("/project/fileupload", "anon");
         // 登出
         filterChainDefinitionMap.put("/logout", "logout");
         shiroFilter.setLoginUrl("/login");

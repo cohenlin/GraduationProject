@@ -36,7 +36,7 @@
     $(function () {
         $("#password-1").on("change", function () {
             var password = $("#password-1").val();
-            var reg = "(?!^\\\\d+$)(?!^[a-zA-Z]+$)(?!^[_#@]+$).{3,12}";
+            var reg = "(?!^\\d+$)(?!^[a-zA-Z]+$)(?!^[_#@]+$).{3,12}";
             if (password == null || password.trim() == '') {
                 alert("密码不能为空！");
                 return;

@@ -13,4 +13,36 @@
     <select id="queryByProId" parameterType="int" resultType="com.cohen.scheduletracking.entity.EmpProject">
         select * from emp_project as t where t.pro_id=#{pid}
     </select>
+    <insert id="saveFile">
+        insert into `file`(file_path, file_name, pid, tid) values(#{filePath}, #{fileName}, #{pid}, #{tid})
+    </insert>
+    <select id="listFiles" resultType="com.cohen.scheduletracking.entity.File">
+        select * from `file`
+        <where>
+            <if test="pid != null and pid > 0">
+                and pid = #{pid}
+            </if>
+            <if test="tid != null and tid > 0">
+                and tid = #{tid}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteFiles">
+        delete from `file`
+        <where>
+            <if test="pid != null and pid > 0">
+                and pid = #{pid}
+            </if>
+            <if test="tid != null and tid > 0">
+                and tid = #{tid}
+            </if>
+            <if test="fileName != null and fileName.trim() != ''">
+                and file_name = #{fileName}
+            </if>
+            <if test="filePath != null and filePath.trim() != ''">
+                and file_path = #{filePath}
+            </if>
+        </where>
+    </delete>
 </mapper>

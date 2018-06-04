@@ -16,7 +16,7 @@ import java.util.List;
  * 任务相关
  */
 @RestController
-@RequestMapping("task")
+@RequestMapping("/task")
 public class TaskController {
 
     @Autowired
