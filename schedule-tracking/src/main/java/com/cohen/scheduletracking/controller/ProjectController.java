@@ -66,7 +66,9 @@ public class ProjectController {
                                   @RequestParam(value = "file", required = false) MultipartFile file, int flg, int id) {
         MessageBody msg = new MessageBody();
 
-        System.out.println(request);
+        if(file == null){
+            file = this.getFileFromRequest(request);
+        }
 
 //        String path = request.getSession().getServletContext().getRealPath("WEB-INF/upload");
         String path = applicationProperty.getFilePath();
@@ -74,12 +76,14 @@ public class ProjectController {
         if (file == null) {
             msg.setStatus("0");
             msg.setBody("上传文件失败！");
+            return msg;
         }
 
         String fileName = file.getOriginalFilename();
         if (fileName == "" || fileName.equals("") || fileName == null || fileName.equals(null)) {
             msg.setStatus("0");
             msg.setBody("上传文件失败！");
+            return msg;
         }
         File upload = new File(path);
         File target = new File(path, fileName);
@@ -95,10 +99,12 @@ public class ProjectController {
             msg.setStatus("0");
             msg.setBody("上传文件失败！");
             e.printStackTrace();
+            return msg;
         } catch (IOException e) {
             msg.setStatus("0");
             msg.setBody("上传文件失败！");
             e.printStackTrace();
+            return msg;
         }
         // 上传文件成功, 保存当前文件与对应项目、任务的关联关系
         projectService.saveFile(file.getOriginalFilename(), path, id, flg);
@@ -111,19 +117,20 @@ public class ProjectController {
         return msg;
     }
 
-    public void getFileContentFromShiroRequest(HttpServletRequest request) {
-        System.out.println(request);
-        ShiroHttpServletRequest shiroRequest = (ShiroHttpServletRequest) request;
-        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-        MultipartHttpServletRequest multipartRequest = commonsMultipartResolver.resolveMultipart((HttpServletRequest) shiroRequest.getRequest());
-
-        Iterator<String> itr = multipartRequest.getFileNames();
-        MultipartFile file = null;
-
-        while (itr.hasNext()) {
-            file = multipartRequest.getFile(itr.next());
+    private MultipartFile getFileFromRequest(HttpServletRequest request) {
+        // 先实例化一个文件解析器
+        CommonsMultipartResolver coMultipartResolver = new CommonsMultipartResolver(request.getSession()
+                .getServletContext());
+        if(coMultipartResolver.isMultipart(request)){
+            // 转换request
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            // 获得文件
+            MultipartFile file = multiRequest.getFile("file");
+            System.out.println("success: file >> " + file);
+            return file;
         }
-        System.out.println();
+        System.out.println("error: file >> " + null);
+        return null;
     }
 
     @ResponseBody
